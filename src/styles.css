@@ -162,7 +162,7 @@ form.stack button {
   background: var(--bad-bg);
   border-color: var(--bad);
 }
-.message.status {
+.message.notice {
   background: var(--panel);
   border-color: var(--muted);
 }

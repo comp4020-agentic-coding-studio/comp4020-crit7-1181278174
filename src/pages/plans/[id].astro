@@ -54,7 +54,7 @@ function status(c: CourseCheck, past: boolean): { text: string; tone: string } {
           </span>
         </p>
         {plan.readOnly ? (
-          <div class="message status">
+          <div class="message notice">
             <p>This example can't be changed. Copy it to make a plan of your own.</p>
             <form method="post" action="/api/plans">
               <input type="hidden" name="copy" value={plan.id} />
@@ -74,7 +74,7 @@ function status(c: CourseCheck, past: boolean): { text: string; tone: string } {
           </p>
         )}
         {plan.lastChange && !refusalText && (
-          <p class="message status" role="status">
+          <p class="message notice" role="status">
             {plan.lastChange}
           </p>
         )}
