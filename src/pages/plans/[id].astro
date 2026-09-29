@@ -88,8 +88,9 @@ const offeringsTag = (t: TermCheck) =>
           </div>
         ) : (
           <p class="help">
-            No login: <a href={address}>{address}</a> is the only way back to this plan, and anyone with
-            it can change it. Every open copy updates when it changes.
+            <strong>Save this link.</strong> There's no login, so this link is the only way back to your
+            plan: <a href={address}>{address}</a>. Anyone with it can edit the plan, and every open copy
+            updates together.
           </p>
         )}
         {refusalText && (
