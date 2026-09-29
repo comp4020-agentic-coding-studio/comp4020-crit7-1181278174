@@ -1,0 +1,1322 @@
+{
+  "source": "https://programsandcourses.anu.edu.au",
+  "fetchedAt": "2026-09-29T16:52:58.140Z",
+  "rulesYear": 2027,
+  "courses": [
+    {
+      "code": "COMP1100",
+      "title": "Programming as Problem Solving",
+      "units": 6,
+      "requisiteText": "Incompatible with COMP1130.",
+      "rulesYear": 2027,
+      "offerings": {
+        "2026": [
+          "S1",
+          "S2"
+        ],
+        "2027": [
+          "S1",
+          "S2"
+        ],
+        "2028": [
+          "S1",
+          "S2"
+        ]
+      },
+      "url": "https://programsandcourses.anu.edu.au/2027/course/COMP1100"
+    },
+    {
+      "code": "COMP1110",
+      "title": "Structured Programming",
+      "units": 6,
+      "requisiteText": "To enrol in this course you must have completed: COMP1100 OR COMP1130 OR COMP1730. You are not able to enrol in this course if you have completed COMP1140 or COMP6710 or COMP7710.",
+      "rulesYear": 2027,
+      "offerings": {
+        "2026": [
+          "S1",
+          "S2"
+        ],
+        "2027": [
+          "S1",
+          "S2"
+        ],
+        "2028": [
+          "S1",
+          "S2"
+        ]
+      },
+      "url": "https://programsandcourses.anu.edu.au/2027/course/COMP1110"
+    },
+    {
+      "code": "COMP1130",
+      "title": "Programming as Problem Solving (Advanced)",
+      "units": 6,
+      "requisiteText": "Incompatible with COMP1100.",
+      "rulesYear": 2027,
+      "offerings": {
+        "2026": [
+          "S1"
+        ],
+        "2027": [
+          "S1"
+        ],
+        "2028": [
+          "S1"
+        ]
+      },
+      "url": "https://programsandcourses.anu.edu.au/2027/course/COMP1130"
+    },
+    {
+      "code": "COMP1140",
+      "title": "Structured Programming (Advanced)",
+      "units": 6,
+      "requisiteText": "To enrol in this course you must have successfully completed COMP1130. Incompatible with COMP1110 or COMP6710 or COMP7710.",
+      "rulesYear": 2027,
+      "offerings": {
+        "2026": [
+          "S2"
+        ],
+        "2027": [
+          "S2"
+        ],
+        "2028": [
+          "S2"
+        ]
+      },
+      "url": "https://programsandcourses.anu.edu.au/2027/course/COMP1140"
+    },
+    {
+      "code": "COMP1600",
+      "title": "Foundations of Computing",
+      "units": 6,
+      "requisiteText": "To enrol in this course you must have completed: 6 units of MATH courses and COMP1100 or COMP1130. It is incompatible with COMP6260.",
+      "rulesYear": 2027,
+      "offerings": {
+        "2026": [
+          "S2"
+        ],
+        "2027": [
+          "S2"
+        ],
+        "2028": [
+          "S2"
+        ]
+      },
+      "url": "https://programsandcourses.anu.edu.au/2027/course/COMP1600"
+    },
+    {
+      "code": "COMP1710",
+      "title": "Web Development and Design",
+      "units": 6,
+      "requisiteText": "Incompatible with COMP6780",
+      "rulesYear": 2026,
+      "offerings": {
+        "2026": [],
+        "2027": [],
+        "2028": []
+      },
+      "url": "https://programsandcourses.anu.edu.au/2026/course/COMP1710"
+    },
+    {
+      "code": "COMP1720",
+      "title": "Art and Interaction Computing",
+      "units": 6,
+      "requisiteText": "Incompatible with COMP6720",
+      "rulesYear": 2027,
+      "offerings": {
+        "2026": [],
+        "2027": [],
+        "2028": []
+      },
+      "url": "https://programsandcourses.anu.edu.au/2027/course/COMP1720"
+    },
+    {
+      "code": "COMP1730",
+      "title": "Programming for Scientists",
+      "units": 6,
+      "requisiteText": "You are not able to enrol in this course if you have successfully completed one of the following courses: COMP1100, COMP1130, COMP1110, COMP1140, COMP6730 or COMP7710.",
+      "rulesYear": 2027,
+      "offerings": {
+        "2026": [
+          "S2"
+        ],
+        "2027": [
+          "S1",
+          "S2"
+        ],
+        "2028": [
+          "S1",
+          "S2"
+        ]
+      },
+      "url": "https://programsandcourses.anu.edu.au/2027/course/COMP1730"
+    },
+    {
+      "code": "COMP2100",
+      "title": "Software Construction",
+      "units": 6,
+      "requisiteText": "To enrol in this course, you must have successfully completed: COMP1110 or COMP1140 AND 6 units of 1000-level MATH. Students enrolled in a Bachelor of Science (BSC) or Bachelor of Advanced Science (ASCAD) must have successfully completed: COMP1110 or COMP1140 AND COMP1600 AND 6 units of 1000-level MATH. You are not able to enrol in this course if you have completed COMP6442.",
+      "rulesYear": 2027,
+      "offerings": {
+        "2026": [
+          "S1",
+          "S2"
+        ],
+        "2027": [
+          "S1",
+          "S2"
+        ],
+        "2028": [
+          "S1",
+          "S2"
+        ]
+      },
+      "url": "https://programsandcourses.anu.edu.au/2027/course/COMP2100"
+    },
+    {
+      "code": "COMP2120",
+      "title": "Software Engineering",
+      "units": 6,
+      "requisiteText": "To enrol in this course you must have successfully completed or be currently studying COMP2100. Incompatible with COMP2130, COMP6120 and COMP6311.",
+      "rulesYear": 2027,
+      "offerings": {
+        "2026": [
+          "S2"
+        ],
+        "2027": [
+          "S2"
+        ],
+        "2028": [
+          "S2"
+        ]
+      },
+      "url": "https://programsandcourses.anu.edu.au/2027/course/COMP2120"
+    },
+    {
+      "code": "COMP2300",
+      "title": "Computer Architecture",
+      "units": 6,
+      "requisiteText": "To enrol in this course you must have completed: ( COMP1100 OR COMP1130 OR COMP1730) AND 6 units of 1000-level MATH courses. Incompatible with COMP6300, ENGN2219 and COMP6719.",
+      "rulesYear": 2027,
+      "offerings": {
+        "2026": [
+          "S1"
+        ],
+        "2027": [
+          "S1"
+        ],
+        "2028": [
+          "S1"
+        ]
+      },
+      "url": "https://programsandcourses.anu.edu.au/2027/course/COMP2300"
+    },
+    {
+      "code": "COMP2310",
+      "title": "Systems, Networks, and Concurrency",
+      "units": 6,
+      "requisiteText": "To enrol in this course you must have completed: COMP1110 or COMP1140 AND COMP2300 or ENGN2219. Incompatible with COMP6310.",
+      "rulesYear": 2027,
+      "offerings": {
+        "2026": [
+          "S2"
+        ],
+        "2027": [
+          "S2"
+        ],
+        "2028": [
+          "S2"
+        ]
+      },
+      "url": "https://programsandcourses.anu.edu.au/2027/course/COMP2310"
+    },
+    {
+      "code": "COMP2400",
+      "title": "Relational Databases",
+      "units": 6,
+      "requisiteText": "To enrol in this course you must have successfully completed: COMP1100 or COMP1130 or INFS1001 or COMP1730 You are not able to enrol in this course if you have successfully completed COMP6240.",
+      "rulesYear": 2027,
+      "offerings": {
+        "2026": [
+          "S1",
+          "S2"
+        ],
+        "2027": [
+          "S1",
+          "S2"
+        ],
+        "2028": [
+          "S1",
+          "S2"
+        ]
+      },
+      "url": "https://programsandcourses.anu.edu.au/2027/course/COMP2400"
+    },
+    {
+      "code": "COMP2550",
+      "title": "Computing R&D Methods",
+      "units": 6,
+      "requisiteText": "To enrol in this course you must be enrolled in the Bachelor of Advanced Computing (Research and Development) (Honours) AND have completed COMP1110 or COMP1140. Incompatible with COMP4450.",
+      "rulesYear": 2027,
+      "offerings": {
+        "2026": [
+          "S1"
+        ],
+        "2027": [
+          "S1"
+        ],
+        "2028": [
+          "S1"
+        ]
+      },
+      "url": "https://programsandcourses.anu.edu.au/2027/course/COMP2550"
+    },
+    {
+      "code": "COMP2610",
+      "title": "Information Theory",
+      "units": 6,
+      "requisiteText": "You cannot enrol in this course if you have completed COMP6261 or ENGN8534.",
+      "rulesYear": 2027,
+      "offerings": {
+        "2026": [
+          "S2"
+        ],
+        "2027": [
+          "S2"
+        ],
+        "2028": []
+      },
+      "url": "https://programsandcourses.anu.edu.au/2027/course/COMP2610"
+    },
+    {
+      "code": "COMP2620",
+      "title": "Logic",
+      "units": 6,
+      "requisiteText": "To enrol in this course you must have completed 6 units of MATH courses OR COMP1600. Incompatible with PHIL2080 or COMP6262.",
+      "rulesYear": 2027,
+      "offerings": {
+        "2026": [
+          "S1"
+        ],
+        "2027": [
+          "S1"
+        ],
+        "2028": [
+          "S1"
+        ]
+      },
+      "url": "https://programsandcourses.anu.edu.au/2027/course/COMP2620"
+    },
+    {
+      "code": "COMP2700",
+      "title": "Cyber Security Foundations",
+      "units": 6,
+      "requisiteText": "To enrol in this course you must have completed: ( COMP1100 or COMP1130) AND ( COMP1600 or 6 units MATH code course)",
+      "rulesYear": 2027,
+      "offerings": {
+        "2026": [
+          "S1"
+        ],
+        "2027": [
+          "S1"
+        ],
+        "2028": [
+          "S1"
+        ]
+      },
+      "url": "https://programsandcourses.anu.edu.au/2027/course/COMP2700"
+    },
+    {
+      "code": "COMP2710",
+      "title": "Special Topics in Computer Science",
+      "units": 6,
+      "requisiteText": "Pre-requisite courses for the Advanced Topic will be listed on the Special Topics in Computing webpage when the course topic is announced. Students who meet the pre-requisites can request a permission code following the instructions on the College webpage.",
+      "rulesYear": 2027,
+      "offerings": {
+        "2026": [
+          "S1"
+        ],
+        "2027": [],
+        "2028": []
+      },
+      "url": "https://programsandcourses.anu.edu.au/2027/course/COMP2710"
+    },
+    {
+      "code": "COMP3242",
+      "title": "Deep Learning",
+      "units": 6,
+      "requisiteText": "To enrol in this course you must have successfully completed: 6 units of ( COMP3670 or MATH1013 or MATH1014 or MATH1115 or MATH1116) and ( COMP1110 or COMP1140). Incompatible with COMP6242.",
+      "rulesYear": 2027,
+      "offerings": {
+        "2026": [
+          "S1"
+        ],
+        "2027": [
+          "S1"
+        ],
+        "2028": [
+          "S1"
+        ]
+      },
+      "url": "https://programsandcourses.anu.edu.au/2027/course/COMP3242"
+    },
+    {
+      "code": "COMP3300",
+      "title": "Operating Systems Implementation",
+      "units": 6,
+      "requisiteText": "To enrol in this course you must have successfully completed COMP2310. Incompatible with COMP6330.",
+      "rulesYear": 2027,
+      "offerings": {
+        "2026": [
+          "S2"
+        ],
+        "2027": [
+          "S2"
+        ],
+        "2028": [
+          "S2"
+        ]
+      },
+      "url": "https://programsandcourses.anu.edu.au/2027/course/COMP3300"
+    },
+    {
+      "code": "COMP3310",
+      "title": "Computer Networks",
+      "units": 6,
+      "requisiteText": "To enrol in this course you must have completed COMP2100 or COMP2300. AND 6 units of COMP2000 -level courses. Incompatible with COMP6331, ENGN3539 and ENGN6539.",
+      "rulesYear": 2027,
+      "offerings": {
+        "2026": [
+          "S1"
+        ],
+        "2027": [
+          "S1"
+        ],
+        "2028": [
+          "S1"
+        ]
+      },
+      "url": "https://programsandcourses.anu.edu.au/2027/course/COMP3310"
+    },
+    {
+      "code": "COMP3320",
+      "title": "High Performance Scientific Computation",
+      "units": 6,
+      "requisiteText": "To enrol in this course you must have completed: ( COMP2100 or COMP2300 or ENGN2219) AND ( COMP1600 or 6 units of MATH courses (excluding MATH1003)) Incompatible with COMP6464.",
+      "rulesYear": 2027,
+      "offerings": {
+        "2026": [
+          "S2"
+        ],
+        "2027": [
+          "S2"
+        ],
+        "2028": [
+          "S2"
+        ]
+      },
+      "url": "https://programsandcourses.anu.edu.au/2027/course/COMP3320"
+    },
+    {
+      "code": "COMP3425",
+      "title": "Data Mining",
+      "units": 6,
+      "requisiteText": "To enrol in this course you must have completed 6 units from COMP1100 or COMP1130 or COMP1730; AND COMP2400 Incompatible with COMP3420, COMP8400, COMP8410 and COMP8910.",
+      "rulesYear": 2027,
+      "offerings": {
+        "2026": [
+          "S1"
+        ],
+        "2027": [],
+        "2028": []
+      },
+      "url": "https://programsandcourses.anu.edu.au/2027/course/COMP3425"
+    },
+    {
+      "code": "COMP3430",
+      "title": "Data Wrangling",
+      "units": 6,
+      "requisiteText": "Students are required to have completed introductory courses on databases, programming and algorithms. To enrol in this course you must have completed 6 units from COMP 1030 or COMP1100 or COMP1130 or COMP1730; AND 6 units from COMP 1040 or COMP1110 or COMP1140; AND COMP2400 Incompatible with COMP8430 and COMP8930.",
+      "rulesYear": 2027,
+      "offerings": {
+        "2026": [
+          "S2"
+        ],
+        "2027": [
+          "S2"
+        ],
+        "2028": [
+          "S2"
+        ]
+      },
+      "url": "https://programsandcourses.anu.edu.au/2027/course/COMP3430"
+    },
+    {
+      "code": "COMP3500",
+      "title": "Software Engineering Project",
+      "units": 6,
+      "requisiteText": "To enrol in this course you must meet the eligibility criteria, which includes membership of a student project group before the end of week 1, where the project has been approved by the convener. You must also be studying: Bachelor of Engineering (Honours) in Software Engineering (AENSE) OR Bachelor of Computing (BCOMP) AND have completed: COMP2100 AND COMP2120 You are not able to enrol in this course if you have previously completed COMP3100 or if you have previously or are currently enrolled in COMP3820 or COMP4500 or COMP4820.",
+      "rulesYear": 2027,
+      "offerings": {
+        "2026": [
+          "S1",
+          "S2"
+        ],
+        "2027": [
+          "S1",
+          "S2"
+        ],
+        "2028": [
+          "S1",
+          "S2"
+        ]
+      },
+      "url": "https://programsandcourses.anu.edu.au/2027/course/COMP3500"
+    },
+    {
+      "code": "COMP3540",
+      "title": "Game Development",
+      "units": 6,
+      "requisiteText": "To enrol in this course you must have completed 12 units of 2000 level COMP courses.",
+      "rulesYear": 2027,
+      "offerings": {
+        "2026": [],
+        "2027": [],
+        "2028": []
+      },
+      "url": "https://programsandcourses.anu.edu.au/2027/course/COMP3540"
+    },
+    {
+      "code": "COMP3600",
+      "title": "Algorithms",
+      "units": 6,
+      "requisiteText": "To enrol in this course you must have completed the following: 24 units of COMP coded courses AND (6 units of MATH OR COMP1600) You are not able to enrol in this course if you have successfully completed COMP6466.",
+      "rulesYear": 2027,
+      "offerings": {
+        "2026": [
+          "S2"
+        ],
+        "2027": [
+          "S2"
+        ],
+        "2028": [
+          "S2"
+        ]
+      },
+      "url": "https://programsandcourses.anu.edu.au/2027/course/COMP3600"
+    },
+    {
+      "code": "COMP3610",
+      "title": "Principles of Programming Languages",
+      "units": 6,
+      "requisiteText": "To enrol in this course you must have completed: COMP2100 and ( COMP1600 or 6 units of MATHS excluding MATH1003) Incompatible with COMP6361.",
+      "rulesYear": 2027,
+      "offerings": {
+        "2026": [],
+        "2027": [
+          "S2"
+        ],
+        "2028": [
+          "S2"
+        ]
+      },
+      "url": "https://programsandcourses.anu.edu.au/2027/course/COMP3610"
+    },
+    {
+      "code": "COMP3620",
+      "title": "Artificial Intelligence",
+      "units": 6,
+      "requisiteText": "To enrol in this course you must have completed: COMP1110 /1140 AND have completed or be currently enrolled in COMP2620. Incompatible with COMP6320.",
+      "rulesYear": 2027,
+      "offerings": {
+        "2026": [
+          "S1"
+        ],
+        "2027": [
+          "S1"
+        ],
+        "2028": [
+          "S1"
+        ]
+      },
+      "url": "https://programsandcourses.anu.edu.au/2027/course/COMP3620"
+    },
+    {
+      "code": "COMP3630",
+      "title": "Theory of Computation",
+      "units": 6,
+      "requisiteText": "To enrol in this course you must have completed: 24 units of COMP coded courses AND (6 units of MATH OR COMP1600) Incompatible with COMP6363.",
+      "rulesYear": 2027,
+      "offerings": {
+        "2026": [
+          "S1"
+        ],
+        "2027": [
+          "S1"
+        ],
+        "2028": [
+          "S1"
+        ]
+      },
+      "url": "https://programsandcourses.anu.edu.au/2027/course/COMP3630"
+    },
+    {
+      "code": "COMP3670",
+      "title": "Introduction to Machine Learning",
+      "units": 6,
+      "requisiteText": "To enrol in this course you must have completed COMP1110 or COMP1140. Incompatible with COMP6670.",
+      "rulesYear": 2027,
+      "offerings": {
+        "2026": [
+          "S2"
+        ],
+        "2027": [
+          "S2"
+        ],
+        "2028": [
+          "S2"
+        ]
+      },
+      "url": "https://programsandcourses.anu.edu.au/2027/course/COMP3670"
+    },
+    {
+      "code": "COMP3703",
+      "title": "Software Security",
+      "units": 6,
+      "requisiteText": "To enrol in this course you must have completed: COMP2300 OR ENGN2219 AND COMP2700. It is incompatible with COMP2710 Software Security.",
+      "rulesYear": 2027,
+      "offerings": {
+        "2026": [],
+        "2027": [],
+        "2028": []
+      },
+      "url": "https://programsandcourses.anu.edu.au/2027/course/COMP3703"
+    },
+    {
+      "code": "COMP3704",
+      "title": "Network Security",
+      "units": 6,
+      "requisiteText": "To enrol in this course, you must have completed: COMP2700 AND COMP3310 or ENGN3539. Incompatible with COMP6034.",
+      "rulesYear": 2027,
+      "offerings": {
+        "2026": [
+          "S2"
+        ],
+        "2027": [
+          "S2"
+        ],
+        "2028": [
+          "S2"
+        ]
+      },
+      "url": "https://programsandcourses.anu.edu.au/2027/course/COMP3704"
+    },
+    {
+      "code": "COMP3710",
+      "title": "Topics in Computer Science",
+      "units": 6,
+      "requisiteText": "",
+      "rulesYear": 2027,
+      "offerings": {
+        "2026": [],
+        "2027": [],
+        "2028": []
+      },
+      "url": "https://programsandcourses.anu.edu.au/2027/course/COMP3710"
+    },
+    {
+      "code": "COMP3740",
+      "title": "Individual Project",
+      "units": 6,
+      "requisiteText": "To enrol in this course you must have completed 72 units towards a degree. Students will receive a permission code by completing the steps listed on Enrolling in student projects including the Student Project Registration Form. CoSM students must be studying a CSCI-MAJ to enrol in this course and count 6 units towards their 3000-level COMP course requirement.",
+      "rulesYear": 2027,
+      "offerings": {
+        "2026": [
+          "S1",
+          "S2"
+        ],
+        "2027": [
+          "S1",
+          "S2"
+        ],
+        "2028": [
+          "S1",
+          "S2"
+        ]
+      },
+      "url": "https://programsandcourses.anu.edu.au/2027/course/COMP3740"
+    },
+    {
+      "code": "COMP3770",
+      "title": "Computing Research Project (R&D)",
+      "units": 6,
+      "requisiteText": "To enrol you must: be studying Bachelor of Advanced Computing (Research and Development) AND have successfully completed COMP2550 AND find a project/supervisor AND have received a permission code by having completed all the steps required for Enrolling in student projects including completing the Student Project Registration Form. Finding a project/supervisor is best done before the start of the semester you are intending to do this course.",
+      "rulesYear": 2027,
+      "offerings": {
+        "2026": [
+          "S1",
+          "S2"
+        ],
+        "2027": [
+          "S1",
+          "S2"
+        ],
+        "2028": [
+          "S1",
+          "S2"
+        ]
+      },
+      "url": "https://programsandcourses.anu.edu.au/2027/course/COMP3770"
+    },
+    {
+      "code": "COMP3820",
+      "title": "Computing Internship",
+      "units": 12,
+      "requisiteText": "To enrol in this course you must have successfully completed COMP2100 and COMP2120. You will need to undergo competitive entry to enrol in this course, please see CECC webpage for more information. You are not able to enrol in this course if you have previously completed or are currently enrolled in COMP3500.",
+      "rulesYear": 2027,
+      "offerings": {
+        "2026": [],
+        "2027": [],
+        "2028": []
+      },
+      "url": "https://programsandcourses.anu.edu.au/2027/course/COMP3820"
+    },
+    {
+      "code": "COMP3900",
+      "title": "Human-Computer Interaction",
+      "units": 6,
+      "requisiteText": "To enrol in this course you must have completed 12 units of 2000 level COMP courses. Incompatible with COMP6390.",
+      "rulesYear": 2027,
+      "offerings": {
+        "2026": [
+          "S2"
+        ],
+        "2027": [
+          "S2"
+        ],
+        "2028": [
+          "S2"
+        ]
+      },
+      "url": "https://programsandcourses.anu.edu.au/2027/course/COMP3900"
+    },
+    {
+      "code": "COMP4011",
+      "title": "Advanced Topics in Formal Methods and Programming Languages",
+      "units": 6,
+      "requisiteText": "12 units of 3000 and/or 4000 level COMP courses. Additional Prerequisite courses for the Advanced Topic will be listed on the SoCo website when the course topic is announced. Students who meet the pre-requisites can request a permission code following the instructions Enrolling in CECC courses.",
+      "rulesYear": 2027,
+      "offerings": {
+        "2026": [
+          "S2"
+        ],
+        "2027": [
+          "S2"
+        ],
+        "2028": [
+          "S2"
+        ]
+      },
+      "url": "https://programsandcourses.anu.edu.au/2027/course/COMP4011"
+    },
+    {
+      "code": "COMP4020",
+      "title": "Advanced Topics in Human-Centred and Creative Computing",
+      "units": 6,
+      "requisiteText": "To enrol in this course, you must have completed COMP3900. Additional Prerequisite courses for the Advanced Topic will be listed on the SoCo website when the course topic is announced. Students who meet the prerequisites can request a permission code from the College.",
+      "rulesYear": 2027,
+      "offerings": {
+        "2026": [
+          "S2"
+        ],
+        "2027": [
+          "S2"
+        ],
+        "2028": [
+          "S2"
+        ]
+      },
+      "url": "https://programsandcourses.anu.edu.au/2027/course/COMP4020"
+    },
+    {
+      "code": "COMP4045",
+      "title": "Advanced Topics in Computer Systems",
+      "units": 6,
+      "requisiteText": "12 units of 3000 and/or 4000 level COMP coded courses. Additional Prerequisite courses for the Advanced Topic will be listed on the SoCo website when the course topic is announced. Students who meet the pre-requisites can request a permission code following the instructions Enrolling in CECC courses.",
+      "rulesYear": 2027,
+      "offerings": {
+        "2026": [
+          "S2"
+        ],
+        "2027": [
+          "S1"
+        ],
+        "2028": [
+          "S2"
+        ]
+      },
+      "url": "https://programsandcourses.anu.edu.au/2027/course/COMP4045"
+    },
+    {
+      "code": "COMP4130",
+      "title": "Managing Software Quality and Process",
+      "units": 6,
+      "requisiteText": "To enrol in this course you must have successfully completed: COMP2120 AND 12 units of 2000-level COMP courses. Incompatible with COMP8131.",
+      "rulesYear": 2027,
+      "offerings": {
+        "2026": [
+          "S1"
+        ],
+        "2027": [
+          "S1"
+        ],
+        "2028": [
+          "S1"
+        ]
+      },
+      "url": "https://programsandcourses.anu.edu.au/2027/course/COMP4130"
+    },
+    {
+      "code": "COMP4300",
+      "title": "Parallel Systems",
+      "units": 6,
+      "requisiteText": "To enrol in this course you must have completed COMP2310. Incompatible with COMP8300.",
+      "rulesYear": 2027,
+      "offerings": {
+        "2026": [],
+        "2027": [
+          "S1"
+        ],
+        "2028": [
+          "S1"
+        ]
+      },
+      "url": "https://programsandcourses.anu.edu.au/2027/course/COMP4300"
+    },
+    {
+      "code": "COMP4350",
+      "title": "Sound and Music Computing",
+      "units": 6,
+      "requisiteText": "To enrol in this course, you must have either: completed 12 units of 2000-level COMP courses or have completed 12 units of 2000-level MUSI, DESN or ARTV courses and have completed COMP1720 Incompatible with COMP8350.",
+      "rulesYear": 2027,
+      "offerings": {
+        "2026": [],
+        "2027": [
+          "S1"
+        ],
+        "2028": []
+      },
+      "url": "https://programsandcourses.anu.edu.au/2027/course/COMP4350"
+    },
+    {
+      "code": "COMP4425",
+      "title": "Data Mining",
+      "units": 6,
+      "requisiteText": "To enrol in this course you must have completed 6 units of ( COMP1100 or COMP1130 or COMP1730) AND COMP2400 Incompatible with COMP3425, COMP8400, COMP8410 and COMP8910.",
+      "rulesYear": 2027,
+      "offerings": {
+        "2026": [],
+        "2027": [
+          "S1"
+        ],
+        "2028": [
+          "S1"
+        ]
+      },
+      "url": "https://programsandcourses.anu.edu.au/2027/course/COMP4425"
+    },
+    {
+      "code": "COMP4450",
+      "title": "Computing Research Methods",
+      "units": 6,
+      "requisiteText": "To enrol in this course you must be enrolled in the: Bachelor of Computing (Honours) (HCOMP) OR Bachelor of Applied Data Analytics (Honours) (HADAN) OR Computer Science Honours Specialisation (COMP-HSPC) OR (Bachelor of Advanced Computing (AACOM) AND have successfully completed 24 units of COMP coded courses) Incompatible with COMP2550 and COMP6445.",
+      "rulesYear": 2027,
+      "offerings": {
+        "2026": [
+          "S1"
+        ],
+        "2027": [
+          "S1"
+        ],
+        "2028": [
+          "S1"
+        ]
+      },
+      "url": "https://programsandcourses.anu.edu.au/2027/course/COMP4450"
+    },
+    {
+      "code": "COMP4500",
+      "title": "Software Engineering Team Project",
+      "units": 6,
+      "requisiteText": "To enrol in this course you must meet the eligibility criteria, which includes membership of a student project group before the end of week 1, where the project has been approved by the convener. You also must be studying: Bachelor of Advanced Computing (AACOM) AND have completed: COMP2120 AND 12 units of 3000 and/or 4000 level courses. OR Bachelor of Engineering (Honours) in Software Engineering (AENSE) AND have completed: COMP3500. Incompatible with COMP4540 and COMP4550 and COMP4810 and COMP4820.",
+      "rulesYear": 2027,
+      "offerings": {
+        "2026": [
+          "S1",
+          "S2"
+        ],
+        "2027": [
+          "S1",
+          "S2"
+        ],
+        "2028": [
+          "S1",
+          "S2"
+        ]
+      },
+      "url": "https://programsandcourses.anu.edu.au/2027/course/COMP4500"
+    },
+    {
+      "code": "COMP4528",
+      "title": "Computer Vision",
+      "units": 6,
+      "requisiteText": "To enrol in this course you must have completed either ENGN2228 or COMP2120 or COMP3600 or COMP3670. Incompatible with ENGN6528 and ENGN4528.",
+      "rulesYear": 2027,
+      "offerings": {
+        "2026": [
+          "S1"
+        ],
+        "2027": [
+          "S1"
+        ],
+        "2028": [
+          "S1"
+        ]
+      },
+      "url": "https://programsandcourses.anu.edu.au/2027/course/COMP4528"
+    },
+    {
+      "code": "COMP4550",
+      "title": "Computing Research Project",
+      "units": 12,
+      "requisiteText": "To enrol in this course you must: have completed COMP2550 OR have completed or be currently enrolled in COMP4450 AND find a project/supervisor AND have a weighted average mark equivalent to an ANU 70 per cent calculated from the 36 units of courses with the highest marks in cognate disciplines (excluding 1000-level courses) AND have received a permission code by having completed all the steps required for Enrolling in student projects including completing the Student Project Registration Form. Incompatible with COMP4500 and COMP4560 and COMP4810 and COMP4820.",
+      "rulesYear": 2027,
+      "offerings": {
+        "2026": [
+          "S1",
+          "S2"
+        ],
+        "2027": [
+          "S1",
+          "S2"
+        ],
+        "2028": [
+          "S1",
+          "S2"
+        ]
+      },
+      "url": "https://programsandcourses.anu.edu.au/2027/course/COMP4550"
+    },
+    {
+      "code": "COMP4600",
+      "title": "Advanced Algorithms",
+      "units": 6,
+      "requisiteText": "To enrol in this course you must have completed COMP3600 and 18 units of 3000 level COMP courses. Incompatible with COMP8460.",
+      "rulesYear": 2027,
+      "offerings": {
+        "2026": [
+          "S1"
+        ],
+        "2027": [],
+        "2028": []
+      },
+      "url": "https://programsandcourses.anu.edu.au/2027/course/COMP4600"
+    },
+    {
+      "code": "COMP4610",
+      "title": "Computer Graphics",
+      "units": 6,
+      "requisiteText": "To enrol in this course you must have completed: COMP2100 AND 6 units of ( COMP3600 OR COMP3540 OR COMP3900 OR COMP3320). You are not able to enrol in this course if you have successfully completed COMP6461 or COMP8610.",
+      "rulesYear": 2027,
+      "offerings": {
+        "2026": [
+          "S1"
+        ],
+        "2027": [
+          "S1"
+        ],
+        "2028": [
+          "S1"
+        ]
+      },
+      "url": "https://programsandcourses.anu.edu.au/2027/course/COMP4610"
+    },
+    {
+      "code": "COMP4620",
+      "title": "Advanced Topics in Artificial Intelligence",
+      "units": 6,
+      "requisiteText": "12 units of 3000 and/or 4000 level COMP courses. Additional Prerequisite courses for the Advanced Topic will be listed on the SoCo website (Special Topics in Computing page) when the course topic is announced. Students who meet the pre-requisites can request a permission code following the instructions for Enrolling in CSS courses. Incompatible with COMP8620.",
+      "rulesYear": 2027,
+      "offerings": {
+        "2026": [
+          "S2"
+        ],
+        "2027": [
+          "S2"
+        ],
+        "2028": [
+          "S2"
+        ]
+      },
+      "url": "https://programsandcourses.anu.edu.au/2027/course/COMP4620"
+    },
+    {
+      "code": "COMP4650",
+      "title": "Document Analysis",
+      "units": 6,
+      "requisiteText": "To enrol in this course you must have completed: ( COMP1600 OR COMP2100) AND 12 units of 3000/4000 level (COMP OR INFS courses). Incompatible with COMP6490.",
+      "rulesYear": 2027,
+      "offerings": {
+        "2026": [
+          "S2"
+        ],
+        "2027": [
+          "S2"
+        ],
+        "2028": [
+          "S2"
+        ]
+      },
+      "url": "https://programsandcourses.anu.edu.au/2027/course/COMP4650"
+    },
+    {
+      "code": "COMP4670",
+      "title": "Statistical Machine Learning",
+      "units": 6,
+      "requisiteText": "To enrol in this course you must have completed: COMP3670 OR ( COMP1110 / COMP1140 AND MATH1014 OR MATH1115 OR MATH1116) Incompatible with COMP8600 and COMP8960.",
+      "rulesYear": 2027,
+      "offerings": {
+        "2026": [
+          "S1"
+        ],
+        "2027": [
+          "S1"
+        ],
+        "2028": [
+          "S1"
+        ]
+      },
+      "url": "https://programsandcourses.anu.edu.au/2027/course/COMP4670"
+    },
+    {
+      "code": "COMP4680",
+      "title": "Advanced Topics in Machine Learning",
+      "units": 6,
+      "requisiteText": "12 units of 3000 and/or 4000 level COMP courses. Additional Prerequisite courses for the Advanced Topic will be listed on the SoCo website (Special Topics in Computing page) when the course topic is announced. Students who meet the pre-requisites can request a permission code following the instructions for Enrolling in CECC courses. Incompatible with COMP8650.",
+      "rulesYear": 2027,
+      "offerings": {
+        "2026": [
+          "S1"
+        ],
+        "2027": [
+          "S1"
+        ],
+        "2028": [
+          "S1"
+        ]
+      },
+      "url": "https://programsandcourses.anu.edu.au/2027/course/COMP4680"
+    },
+    {
+      "code": "COMP4691",
+      "title": "Optimisation",
+      "units": 6,
+      "requisiteText": "To enrol in this course you must have completed COMP3620 and have completed MATH1013 or MATH1115. Incompatible with COMP8691.",
+      "rulesYear": 2027,
+      "offerings": {
+        "2026": [
+          "S2"
+        ],
+        "2027": [],
+        "2028": []
+      },
+      "url": "https://programsandcourses.anu.edu.au/2027/course/COMP4691"
+    },
+    {
+      "code": "COMP4703",
+      "title": "Vulnerability Research and Exploit Mitigation",
+      "units": 6,
+      "requisiteText": "To enrol in this course you must have completed COMP2310 and COMP2700. Incompatible with COMP2710, COMP3703 and COMP8703.",
+      "rulesYear": 2027,
+      "offerings": {
+        "2026": [
+          "S1"
+        ],
+        "2027": [
+          "S1"
+        ],
+        "2028": [
+          "S1"
+        ]
+      },
+      "url": "https://programsandcourses.anu.edu.au/2027/course/COMP4703"
+    },
+    {
+      "code": "COMP4712",
+      "title": "Compiler Construction",
+      "units": 6,
+      "requisiteText": "To enrol in this course you must have completed: COMP2100 AND COMP2310 AND 6 units of 3000 and/or 4000 level COMP courses. Incompatible with COMP3710 Students who have previously completed COMP3710 - please contact CECC Student Services for a Permission Code.",
+      "rulesYear": 2027,
+      "offerings": {
+        "2026": [
+          "S1"
+        ],
+        "2027": [],
+        "2028": []
+      },
+      "url": "https://programsandcourses.anu.edu.au/2027/course/COMP4712"
+    },
+    {
+      "code": "COMP4820",
+      "title": "Advanced Computing Internship",
+      "units": 12,
+      "requisiteText": "To enrol in this course you must be studying a Bachelor of Advanced Computing AND have successfully completed: COMP2100 AND 12 units of 3000 level COMP courses. Incompatible with COMP4500, COMP4550, COMP4560 and COMP4810. Competitive entry based on application and interviews with Hosts.",
+      "rulesYear": 2027,
+      "offerings": {
+        "2026": [
+          "S1",
+          "S2"
+        ],
+        "2027": [
+          "S1",
+          "S2"
+        ],
+        "2028": [
+          "S1",
+          "S2"
+        ]
+      },
+      "url": "https://programsandcourses.anu.edu.au/2027/course/COMP4820"
+    },
+    {
+      "code": "COMP4880",
+      "title": "Computational Methods for Network Science",
+      "units": 6,
+      "requisiteText": "To enrol in this course you must have completed COMP3670, or you must have completed all of the following: COMP1110 or COMP1140 and MATH1014 or MATH1115. Incompatible with COMP8880.",
+      "rulesYear": 2027,
+      "offerings": {
+        "2026": [],
+        "2027": [],
+        "2028": []
+      },
+      "url": "https://programsandcourses.anu.edu.au/2027/course/COMP4880"
+    },
+    {
+      "code": "ENGN2219",
+      "title": "Computer Architecture",
+      "units": 6,
+      "requisiteText": "To enrol in this course you must have completed one of: COMP1100 - Programming as Problem Solving COMP1130 - Programming as Problem Solving (Advanced) COMP1730 - Programming for Scientists Incompatible with: COMP2300 - Computer Organisation COMP6300 - Computer Organisation COMP6719 - Computer Systems & Organisation",
+      "rulesYear": 2027,
+      "offerings": {
+        "2026": [
+          "S1"
+        ],
+        "2027": [
+          "S1"
+        ],
+        "2028": [
+          "S1"
+        ]
+      },
+      "url": "https://programsandcourses.anu.edu.au/2027/course/ENGN2219"
+    },
+    {
+      "code": "ENGN2228",
+      "title": "Signals and Systems",
+      "units": 6,
+      "requisiteText": "To enrol in this course you must have successfully completed MATH1013 or MATH1014 or MATH1115 or MATH1116.",
+      "rulesYear": 2027,
+      "offerings": {
+        "2026": [
+          "S2"
+        ],
+        "2027": [
+          "S2"
+        ],
+        "2028": [
+          "S2"
+        ]
+      },
+      "url": "https://programsandcourses.anu.edu.au/2027/course/ENGN2228"
+    },
+    {
+      "code": "ENGN3539",
+      "title": "Computer Networks",
+      "units": 6,
+      "requisiteText": "To enrol in this course you must have successfully completed ENGN2219. Incompatible with COMP3310, COMP6331 and ENGN6539.",
+      "rulesYear": 2027,
+      "offerings": {
+        "2026": [
+          "S1"
+        ],
+        "2027": [
+          "S1"
+        ],
+        "2028": [
+          "S1"
+        ]
+      },
+      "url": "https://programsandcourses.anu.edu.au/2027/course/ENGN3539"
+    },
+    {
+      "code": "INFS1001",
+      "title": "Business Information Systems",
+      "units": 6,
+      "requisiteText": "",
+      "rulesYear": 2027,
+      "offerings": {
+        "2026": [
+          "S1"
+        ],
+        "2027": [
+          "S1",
+          "S2"
+        ],
+        "2028": [
+          "S1",
+          "S2"
+        ]
+      },
+      "url": "https://programsandcourses.anu.edu.au/2027/course/INFS1001"
+    },
+    {
+      "code": "MATH1003",
+      "title": "Algebra and Calculus Methods",
+      "units": 6,
+      "requisiteText": "You are not able to enrol in this course if you have previously studied MATH1013 or MATH1113 or MATH1115",
+      "rulesYear": 2027,
+      "offerings": {
+        "2026": [
+          "S1"
+        ],
+        "2027": [
+          "S1"
+        ],
+        "2028": [
+          "S1"
+        ]
+      },
+      "url": "https://programsandcourses.anu.edu.au/2027/course/MATH1003"
+    },
+    {
+      "code": "MATH1005",
+      "title": "Discrete Mathematical Models",
+      "units": 6,
+      "requisiteText": "Incompatible: MATH6005",
+      "rulesYear": 2027,
+      "offerings": {
+        "2026": [
+          "S1"
+        ],
+        "2027": [
+          "S1"
+        ],
+        "2028": [
+          "S1"
+        ]
+      },
+      "url": "https://programsandcourses.anu.edu.au/2027/course/MATH1005"
+    },
+    {
+      "code": "MATH1013",
+      "title": "Mathematics and Applications 1",
+      "units": 6,
+      "requisiteText": "You are not able to enrol in this course if you have previously completed, or are attempting to concurrently enrol in, MATH1113 or MATH1115.",
+      "rulesYear": 2027,
+      "offerings": {
+        "2026": [
+          "S1",
+          "S2"
+        ],
+        "2027": [
+          "S1",
+          "S2"
+        ],
+        "2028": [
+          "S1",
+          "S2"
+        ]
+      },
+      "url": "https://programsandcourses.anu.edu.au/2027/course/MATH1013"
+    },
+    {
+      "code": "MATH1014",
+      "title": "Mathematics and Applications 2",
+      "units": 6,
+      "requisiteText": "To enrol in this course you must have completed MATH1013 or MATH1115 or MATH1113. You are not able to enrol in this course if you have previously completed MATH1116.",
+      "rulesYear": 2027,
+      "offerings": {
+        "2026": [
+          "S1",
+          "S2"
+        ],
+        "2027": [
+          "S1",
+          "S2"
+        ],
+        "2028": [
+          "S1",
+          "S2"
+        ]
+      },
+      "url": "https://programsandcourses.anu.edu.au/2027/course/MATH1014"
+    },
+    {
+      "code": "MATH1113",
+      "title": "Mathematical Foundations for Actuarial Studies",
+      "units": 6,
+      "requisiteText": "You are not able to enrol in this course if you have previously completed MATH1013 or MATH1115.",
+      "rulesYear": 2027,
+      "offerings": {
+        "2026": [
+          "S2"
+        ],
+        "2027": [
+          "S2"
+        ],
+        "2028": [
+          "S2"
+        ]
+      },
+      "url": "https://programsandcourses.anu.edu.au/2027/course/MATH1113"
+    },
+    {
+      "code": "MATH1115",
+      "title": "Advanced Mathematics and Applications 1",
+      "units": 6,
+      "requisiteText": "If you have previously completed MATH1013 or MATH1113 then you can only enrol in MATH1115 with the permission of the course convener.",
+      "rulesYear": 2027,
+      "offerings": {
+        "2026": [
+          "S1"
+        ],
+        "2027": [
+          "S1"
+        ],
+        "2028": [
+          "S1"
+        ]
+      },
+      "url": "https://programsandcourses.anu.edu.au/2027/course/MATH1115"
+    },
+    {
+      "code": "MATH1116",
+      "title": "Advanced Mathematics and Applications 2",
+      "units": 6,
+      "requisiteText": "To enrol in this course you must have completed MATH1115 with a mark of 60 or above or MATH1113 with a mark of 80 or above. You may not enrol in MATH1116 if you have previously completed, or are attempting to concurrently enrol in, MATH1014. You may not enrol in MATH1116 if you have previously completed MATH1014.",
+      "rulesYear": 2027,
+      "offerings": {
+        "2026": [
+          "S2"
+        ],
+        "2027": [
+          "S2"
+        ],
+        "2028": [
+          "S2"
+        ]
+      },
+      "url": "https://programsandcourses.anu.edu.au/2027/course/MATH1116"
+    }
+  ]
+}

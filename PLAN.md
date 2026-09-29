@@ -63,10 +63,12 @@ phone, with a keyboard and without JavaScript); importing from ANUHub.
 
 ## Data
 
-- `scripts/fetch-catalogue.ts` writes `data/catalogue.json`: 72 courses (the
-  61 undergraduate COMP courses, plus MATH1003, MATH1005, MATH1013, MATH1014,
+- `scripts/fetch-catalogue.ts` writes `data/catalogue.json`: 71 courses (the
+  undergraduate COMP courses, plus MATH1003, MATH1005, MATH1013, MATH1014,
   MATH1113, MATH1115, MATH1116, ENGN2219, ENGN2228, ENGN3539 and INFS1001,
-  which their prerequisites name). For each: code, title, units, the
+  which their prerequisites name). COMP5920, the exchange program, is left
+  out: its unit value is "6 to 24 units" and it is not a course you place in a
+  semester (decided 30 September). For each course: code, title, units, the
   requisite text as P&C prints it, offerings for 2026 to 2028, source URL and
   the time it was read. It waits at least half a second between requests and
   sends a User-Agent naming only the project. The method follows the notes in
