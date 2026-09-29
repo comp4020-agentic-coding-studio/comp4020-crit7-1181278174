@@ -1,0 +1,65 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { catalogue, leadsTo } from "../../lib/catalogue";
+
+// The whole map at a glance: every course by level, with how many requirement
+// groups it has and how many courses it opens. The form sends ?code=… here,
+// which goes straight to that course's map.
+const asked = (Astro.url.searchParams.get("code") ?? "").toUpperCase().replace(/\s+/g, "");
+if (asked && catalogue.courses.has(asked)) return Astro.redirect(`/map/${asked}`, 303);
+const missing = asked && !catalogue.courses.has(asked) ? asked : "";
+
+const levels = [1000, 2000, 3000, 4000].map((level) => ({
+  level,
+  courses: [...catalogue.courses.values()]
+    .filter((c) => c.level === level)
+    .map((c) => ({ ...c, opens: leadsTo(c.code).length })),
+}));
+---
+
+<Layout title="Course map · Semester Planner" description="Every course in the planner by level, with what each needs and opens.">
+  <div class="map-top">
+    <div>
+      <h1>Course map</h1>
+      <p class="lede">
+        Choose a course to see what it needs first and which courses it opens. Numbers come from
+        the prerequisite rules read from P&amp;C.
+      </p>
+    </div>
+    <form class="map-go" method="get" action="/map/">
+      <div>
+        <label for="map-go">Go to a course</label>
+        <input id="map-go" class="code-in" name="code" placeholder="e.g. COMP2100" autocomplete="off" list="map-codes" value={missing} />
+      </div>
+      <button class="btn">Show</button>
+    </form>
+  </div>
+  {missing && <p class="message error" role="alert">{missing} isn't in this planner.</p>}
+
+  <div class="level-cols" style="margin-top: 28px">
+    {
+      levels.map(({ level, courses }) => (
+        <section aria-labelledby={`l-${level}`}>
+          <h2 id={`l-${level}`}>{level}-level</h2>
+          <ul>
+            {courses.map((c) => (
+              <li>
+                <a class="node" href={`/map/${c.code}`}>
+                  <span class="code">{c.code}</span>
+                  <span>{c.title}</span>
+                  <span class="sub">
+                    {c.groups.length === 0 ? "needs nothing first" : `needs ${c.groups.length} thing${c.groups.length === 1 ? "" : "s"}`} · opens{" "}
+                    {c.opens}
+                  </span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ))
+    }
+  </div>
+  <datalist id="map-codes">
+    {[...catalogue.courses.values()].map((c) => <option value={c.code}>{c.title}</option>)}
+  </datalist>
+</Layout>

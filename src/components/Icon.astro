@@ -1,0 +1,21 @@
+---
+// Stroke icons from the design canvas. Always decorative: the text beside an
+// icon says what it means.
+type Props = { name: "check" | "x" | "alert" | "right" | "down" | "plus" | "link"; size?: number };
+const { name, size = 14 } = Astro.props;
+const paths: Record<Props["name"], string> = {
+  check: "M20 6 9 17l-5-5",
+  x: "M18 6 6 18M6 6l12 12",
+  alert: "M12 8v5M12 17h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0z",
+  right: "M2 12h38M32 5l8 7-8 7",
+  down: "M12 2v30M5 25l7 8 7-8",
+  plus: "M12 5v14M5 12h14",
+  link: "M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.7 1.7M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.7-1.7",
+};
+const box = name === "right" ? "0 0 44 24" : name === "down" ? "0 0 24 36" : "0 0 24 24";
+const width = name === "right" ? 44 : name === "down" ? 24 : size;
+const height = name === "right" ? 24 : name === "down" ? 36 : size;
+const weight = ["check", "x"].includes(name) ? 3 : 2;
+---
+
+<svg width={width} height={height} viewBox={box} fill="none" stroke="currentColor" stroke-width={weight} stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class={name}><path d={paths[name]}></path></svg>

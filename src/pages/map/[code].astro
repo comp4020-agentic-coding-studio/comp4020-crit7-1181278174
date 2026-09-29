@@ -1,0 +1,157 @@
+---
+import Icon from "../../components/Icon.astro";
+import Layout from "../../layouts/Layout.astro";
+import { catalogue } from "../../lib/catalogue";
+import { needsOf, opensFrom, runsText } from "../../lib/map";
+
+// One course in the middle: what it needs first on the left, what it opens on
+// the right. Every box is a link that centres the map on that course.
+const code = (Astro.params.code ?? "").toUpperCase();
+const course = catalogue.courses.get(code);
+if (!course) Astro.response.status = 404;
+const needs = course ? needsOf(course) : [];
+const opens = course ? opensFrom(course) : [];
+---
+
+<Layout
+  title={course ? `${course.code} on the course map · Semester Planner` : "Not on the map · Semester Planner"}
+  description="What a course needs first, and which courses it opens."
+>
+  {
+    !course ? (
+      <>
+        <h1>{code || "That course"} isn't on the map</h1>
+        <p>
+          The map covers the courses in this planner. See <a href="/map/">the whole map</a>.
+        </p>
+      </>
+    ) : (
+      <>
+        <div class="map-top">
+          <div>
+            <p class="crumbs">
+              <a href="/map/">Course map</a> <span aria-hidden="true">/</span> {course.code}
+            </p>
+            <h1>What {course.code} needs, and what it opens</h1>
+          </div>
+          <form class="map-go" method="get" action="/map/">
+            <div>
+              <label for="map-go">Centre on another course</label>
+              <input id="map-go" class="code-in" name="code" placeholder="e.g. COMP3600" autocomplete="off" list="map-codes" />
+            </div>
+            <button class="btn">Show</button>
+          </form>
+        </div>
+
+        <div class="map">
+          <section aria-labelledby="need-h">
+            <h2 class="band" id="need-h">
+              {needs.length === 0 ? "Needs first · nothing listed" : needs.length === 1 ? "Needs first" : "Needs first · all of these"}
+            </h2>
+            {needs.length === 0 && <p class="help">P&amp;C lists no prerequisites for {course.code}.</p>}
+            {needs.map((need, i) => (
+              <>
+                {i > 0 && <span class="joiner">and</span>}
+                <div class="need-box">
+                  <span class="label">{need.label}</span>
+                  {need.options.map((option, j) => (
+                    <>
+                      {j > 0 && need.options.length > 1 && <span class="joiner">or</span>}
+                      {option.code && option.inCatalogue ? (
+                        <a class="node before" href={`/map/${option.code}`}>
+                          <span class="code">{option.code}</span>
+                          <span>{option.title}</span>
+                          {option.text && <span class="sub">{option.text}</span>}
+                          <span class:list={["sub", { none: !option.itselfNeeds }]}>
+                            {option.itselfNeeds ? `itself needs ${option.itselfNeeds}` : "needs nothing first"}
+                          </span>
+                        </a>
+                      ) : option.code ? (
+                        <div class="node">
+                          <span class="code">{option.code}</span>
+                          <span class="sub">not in this planner</span>
+                        </div>
+                      ) : (
+                        <div class="node">
+                          <span>{option.text}</span>
+                          <span class="sub">added up from the courses before it</span>
+                        </div>
+                      )}
+                    </>
+                  ))}
+                </div>
+              </>
+            ))}
+          </section>
+
+          <div class="arrow">
+            <span class="right"><Icon name="right" /></span>
+            <span class="down"><Icon name="down" /></span>
+          </div>
+
+          <section class="this" aria-labelledby="this-h">
+            <span class="code">{course.code}</span>
+            <h2 id="this-h">{course.title}</h2>
+            <span class="runs-line">
+              {course.units} units · {runsText(course)}
+            </span>
+            {course.manual.length > 0 && (
+              <div class="note-box">
+                <strong>Check yourself:</strong> P&amp;C sets {course.manual.length === 1 ? "a condition" : "conditions"} this
+                planner can't check. See the course page.
+              </div>
+            )}
+            <div class="links">
+              <a href={`/courses/${course.code}`}>Course page</a>
+              <a class="ghost" href={course.sourceUrl}>
+                P&amp;C<span class="vh"> page for {course.code}</span> ↗
+              </a>
+            </div>
+          </section>
+
+          <div class="arrow">
+            <span class="right"><Icon name="right" /></span>
+            <span class="down"><Icon name="down" /></span>
+          </div>
+
+          <section aria-labelledby="open-h">
+            <h2 class="band" id="open-h">
+              {opens.length === 0 ? "Opens · no course names it" : `Opens · ${opens.length} course${opens.length === 1 ? " names" : "s name"} it`}
+            </h2>
+            {opens.length === 0 ? (
+              <p class="help">No course in this planner lists {course.code} as a prerequisite.</p>
+            ) : (
+              <ul class="opens">
+                {opens.map((next) => (
+                  <li>
+                    <a class="node" href={`/map/${next.code}`}>
+                      <span class="code">{next.code}</span>
+                      <span>{next.title}</span>
+                      <span class:list={["sub", { none: !next.alsoNeeds }]}>
+                        {next.alsoNeeds ? `also needs ${next.alsoNeeds}` : "nothing else"}
+                        {next.hasNote && " · has a note"}
+                      </span>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </section>
+        </div>
+
+        <p class="map-key">
+          <span>
+            <strong>How to read it:</strong> arrows run from what you need to what it opens.
+          </span>
+          <span>Boxes on the left are all required; inside a box, one course is enough.</span>
+          <span>Select any course to centre the map on it.</span>
+        </p>
+        <datalist id="map-codes">
+          {[...catalogue.courses.values()].map((c) => (
+            <option value={c.code}>{c.title}</option>
+          ))}
+        </datalist>
+      </>
+    )
+  }
+</Layout>
