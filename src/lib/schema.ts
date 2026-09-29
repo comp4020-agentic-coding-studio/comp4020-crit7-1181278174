@@ -1,5 +1,5 @@
 import { sql } from "drizzle-orm";
-import { check, index, int, primaryKey, sqliteTable, text } from "drizzle-orm/sqlite-core";
+import { check, index, int, primaryKey, sqliteTable, text, uniqueIndex } from "drizzle-orm/sqlite-core";
 
 // The schema is the ground truth for the database. To change it: edit here,
 // run `pnpm db:generate` to turn the diff into a migration under drizzle/,
@@ -138,6 +138,49 @@ export const planCourses = sqliteTable(
     check("plan_courses_code", courseCode(t.courseCode)),
     check("plan_courses_session", sql`${t.session} IN ('S1', 'S2')`),
     check("plan_courses_units", sql`${t.units} BETWEEN 1 AND 24`),
+  ],
+);
+
+// The computing majors, loaded from data/majors.json at every boot like the
+// catalogue. A block is one paragraph of P&C's requirements in its own words;
+// its courses are the lines listed under it. Nothing here is user data.
+export const majors = sqliteTable("majors", {
+  code: text().primaryKey(),
+  title: text().notNull(),
+  // the whole requirements section as plain text, which every block is held to
+  requirementsText: text("requirements_text").notNull(),
+  sourceUrl: text("source_url").notNull(),
+  fetchedAt: text("fetched_at").notNull(),
+});
+
+export const majorBlocks = sqliteTable(
+  "major_blocks",
+  {
+    id: int().primaryKey({ autoIncrement: true }),
+    majorCode: text("major_code")
+      .notNull()
+      .references(() => majors.code, { onDelete: "cascade" }),
+    position: int().notNull(),
+    text: text().notNull(),
+  },
+  (t) => [uniqueIndex("major_blocks_position").on(t.majorCode, t.position)],
+);
+
+export const majorCourses = sqliteTable(
+  "major_courses",
+  {
+    blockId: int("block_id")
+      .notNull()
+      .references(() => majorBlocks.id, { onDelete: "cascade" }),
+    position: int().notNull(),
+    courseCode: text("course_code").notNull(),
+    title: text().notNull(),
+    // as P&C prints it: "6 units", "6+6 units", or nothing
+    units: text(),
+  },
+  (t) => [
+    primaryKey({ columns: [t.blockId, t.position] }),
+    check("major_courses_code", courseCode(t.courseCode)),
   ],
 );
 

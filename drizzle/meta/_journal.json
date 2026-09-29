@@ -29,6 +29,13 @@
       "when": 1790701140883,
       "tag": "0003_plan_guards",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "6",
+      "when": 1790705655368,
+      "tag": "0004_majors",
+      "breakpoints": true
     }
   ]
 }

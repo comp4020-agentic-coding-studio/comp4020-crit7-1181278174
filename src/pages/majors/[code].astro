@@ -1,0 +1,176 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { catalogue } from "../../lib/catalogue";
+import { shortLabel } from "../../lib/check";
+import { runsText } from "../../lib/map";
+import { allMajors, compare, majorByCode, planIdFrom } from "../../lib/majors";
+import { getPlan } from "../../lib/plans";
+
+// One major's requirements in P&C's words, one block per list. With ?plan=…
+// the page marks which listed courses that plan has; it never says whether
+// the major is complete, because the whole-major rules are prose.
+const major = majorByCode((Astro.params.code ?? "").toUpperCase());
+if (!major) Astro.response.status = 404;
+
+const planInput = Astro.url.searchParams.get("plan") ?? "";
+const plan = planInput ? getPlan(planIdFrom(planInput)) : undefined;
+const planMissing = Boolean(planInput) && !plan;
+
+const kindLabel = { compulsory: "Compulsory", minimum: "At least", maximum: "At most", list: "From this list", rule: "" };
+const blocks = (major?.blocks ?? []).map((block) => {
+  const mine = plan ? compare(block, plan.courses) : undefined;
+  const target = block.units ?? 0;
+  return {
+    ...block,
+    mine,
+    tone: !mine || mine.units === 0 ? "" : target && mine.units >= target ? "full" : "some",
+  };
+});
+const inPlanUnits = plan
+  ? [...new Set(blocks.flatMap((b) => [...(b.mine?.placed.values() ?? [])]))].reduce((sum, c) => sum + c.units, 0)
+  : 0;
+const read = major
+  ? new Date(major.fetchedAt).toLocaleDateString("en-AU", { day: "numeric", month: "long", year: "numeric", timeZone: "Australia/Sydney" })
+  : "";
+---
+
+<Layout title={major ? `${major.title} (${major.code}) · Semester Planner` : "Major not found · Semester Planner"}>
+  {
+    !major ? (
+      <>
+        <h1>That major isn't here</h1>
+        <p>
+          See <a href="/majors/">the computing majors</a>.
+        </p>
+      </>
+    ) : (
+      <div class="major-layout">
+        <div>
+          <p class="crumbs">
+            <a href="/majors/">Majors</a> <span aria-hidden="true">/</span> {major.code}
+          </p>
+          <span class="code" style="color: var(--accent); font-size: 17px">
+            {major.code}
+          </span>
+          <h1>{major.title}</h1>
+          <ul class="chips">
+            <li>A computing major in the Bachelor of Computing</li>
+            <li>
+              <a href={major.sourceUrl}>2027 requirements, read from P&amp;C on {read} ↗</a>
+            </li>
+          </ul>
+
+          <section class="card" aria-labelledby="whole-h" style="margin-top: 24px">
+            <div class="block-head">
+              <h2 id="whole-h" style="font-family: var(--display); font-size: 20px; margin: 0">The whole major</h2>
+              <span class="help" style="font-size: 13px">Quoted from P&amp;C · not checked by the planner</span>
+            </div>
+            <p style="margin: 0 0 6px">{major.rules[0]}</p>
+            {major.rules.length > 1 && (
+              <ul style="margin: 0; padding-left: 22px">
+                {major.rules.slice(1).map((rule) => <li>{rule}</li>)}
+              </ul>
+            )}
+          </section>
+
+          {blocks.map((block, i) => (
+            <section class:list={["block", block.kind]} aria-labelledby={`b-${i}`}>
+              <div class="block-head">
+                <div>
+                  <span class="kind">
+                    {kindLabel[block.kind].toUpperCase()}
+                    {block.units ? ` · ${block.units} UNITS` : ""}
+                  </span>
+                  <h2 id={`b-${i}`}>{block.text}</h2>
+                </div>
+                {block.mine && (
+                  <span class:list={["count", block.tone]}>
+                    {block.units ? `${block.mine.units} of ${block.units} units` : `${block.mine.units} units`} in {plan?.name}
+                  </span>
+                )}
+              </div>
+              <ul class="lines">
+                {block.courses.map((line) => {
+                  const known = catalogue.courses.get(line.code);
+                  const placed = block.mine?.placed.get(line.code);
+                  return (
+                    <li class="line">
+                      {known ? (
+                        <a class="code" href={`/courses/${line.code}`}>
+                          {line.code}
+                        </a>
+                      ) : (
+                        <span class="code">{line.code}</span>
+                      )}
+                      <span class="title">
+                        {line.title}
+                        {line.units && <span class="help" style="font-size: 13px"> ({line.units})</span>}
+                      </span>
+                      {known ? (
+                        <span class="when">{runsText(known)}</span>
+                      ) : (
+                        <a href={`https://programsandcourses.anu.edu.au/2027/course/${line.code}`} style="font-size: 13px">
+                          Not in this planner · P&amp;C<span class="vh"> page for {line.code}</span> ↗
+                        </a>
+                      )}
+                      {plan && (
+                        <span class:list={["mine", { yes: placed }]}>
+                          {placed ? `✓ In plan · ${shortLabel(placed)}` : "Not in plan"}
+                        </span>
+                      )}
+                    </li>
+                  );
+                })}
+              </ul>
+            </section>
+          ))}
+
+          {major.notes.map((note) => (
+            <p class="help" style="margin-top: 16px">
+              P&amp;C adds: “{note}”
+            </p>
+          ))}
+        </div>
+
+        <aside style="display: flex; flex-direction: column; gap: 16px; padding-top: 24px">
+          <section class="card" aria-labelledby="cmp-h">
+            <h2 id="cmp-h" style="font-size: 19px; margin: 0 0 8px">
+              Compare with a plan
+            </h2>
+            <form method="get" action={`/majors/${major.code}`} style="display: grid; gap: 6px">
+              <label for="cmp-in">Your plan's link or id</label>
+              <input id="cmp-in" class="code-in" name="plan" value={planInput} autocomplete="off" />
+              <button class="btn" style="margin-top: 6px">
+                Compare
+              </button>
+            </form>
+            {plan && (
+              <p class="message notice" style="margin-bottom: 0">
+                Comparing with <strong>{plan.name}</strong>: {inPlanUnits} units of the courses this major
+                lists are in it. The planner does not decide whether the major is complete.
+              </p>
+            )}
+            {planMissing && (
+              <p class="message error" role="alert" style="margin-bottom: 0">
+                There is no plan at that address.
+              </p>
+            )}
+            {!plan && !planMissing && (
+              <p class="help" style="margin-top: 8px">
+                Try it with the <a href={`/majors/${major.code}?plan=example`}>example plan</a>.
+              </p>
+            )}
+          </section>
+          <nav class="card" aria-label="Other computing majors" style="display: grid; gap: 6px; font-size: 15px">
+            <h2 style="font-size: 17px; margin: 0 0 4px">Other computing majors</h2>
+            {allMajors
+              .filter((m) => m.code !== major.code)
+              .map((m) => (
+                <a href={`/majors/${m.code}${plan ? `?plan=${plan.id}` : ""}`}>{m.title}</a>
+              ))}
+          </nav>
+        </aside>
+      </div>
+    )
+  }
+</Layout>
