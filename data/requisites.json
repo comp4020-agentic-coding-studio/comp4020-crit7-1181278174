@@ -1,0 +1,412 @@
+{
+  "about": "Rules read by hand from each course's requisite text in catalogue.json (the 2027 P&C pages). groups: every group must be met; a group is met by any one of its options. An option is a course (concurrent: it may be taken in the same semester) or a number of units, optionally limited to subjects and levels and excluding codes. incompatible: courses P&C says cannot be combined with this one. manual: sentences copied word for word from the text that this planner cannot check. reading: how an unclear sentence was read.",
+  "rules": {
+    "COMP1100": { "incompatible": ["COMP1130"] },
+    "COMP1110": {
+      "groups": [[{ "course": "COMP1100" }, { "course": "COMP1130" }, { "course": "COMP1730" }]],
+      "incompatible": ["COMP1140", "COMP6710", "COMP7710"]
+    },
+    "COMP1130": { "incompatible": ["COMP1100"] },
+    "COMP1140": {
+      "groups": [[{ "course": "COMP1130" }]],
+      "incompatible": ["COMP1110", "COMP6710", "COMP7710"]
+    },
+    "COMP1600": {
+      "groups": [
+        [{ "units": 6, "subjects": ["MATH"] }],
+        [{ "course": "COMP1100" }, { "course": "COMP1130" }]
+      ],
+      "incompatible": ["COMP6260"]
+    },
+    "COMP1710": { "incompatible": ["COMP6780"] },
+    "COMP1720": { "incompatible": ["COMP6720"] },
+    "COMP1730": {
+      "incompatible": ["COMP1100", "COMP1130", "COMP1110", "COMP1140", "COMP6730", "COMP7710"]
+    },
+    "COMP2100": {
+      "groups": [
+        [{ "course": "COMP1110" }, { "course": "COMP1140" }],
+        [{ "units": 6, "subjects": ["MATH"], "levels": [1000] }]
+      ],
+      "incompatible": ["COMP6442"],
+      "manual": [
+        "Students enrolled in a Bachelor of Science (BSC) or Bachelor of Advanced Science (ASCAD) must have successfully completed: COMP1110 or COMP1140 AND COMP1600 AND 6 units of 1000-level MATH."
+      ]
+    },
+    "COMP2120": {
+      "groups": [[{ "course": "COMP2100", "concurrent": true }]],
+      "incompatible": ["COMP2130", "COMP6120", "COMP6311"]
+    },
+    "COMP2300": {
+      "groups": [
+        [{ "course": "COMP1100" }, { "course": "COMP1130" }, { "course": "COMP1730" }],
+        [{ "units": 6, "subjects": ["MATH"], "levels": [1000] }]
+      ],
+      "incompatible": ["COMP6300", "ENGN2219", "COMP6719"]
+    },
+    "COMP2310": {
+      "groups": [
+        [{ "course": "COMP1110" }, { "course": "COMP1140" }],
+        [{ "course": "COMP2300" }, { "course": "ENGN2219" }]
+      ],
+      "incompatible": ["COMP6310"],
+      "reading": "Read as (COMP1110 or COMP1140) AND (COMP2300 or ENGN2219): the capital AND splits the sentence."
+    },
+    "COMP2400": {
+      "groups": [
+        [{ "course": "COMP1100" }, { "course": "COMP1130" }, { "course": "INFS1001" }, { "course": "COMP1730" }]
+      ],
+      "incompatible": ["COMP6240"]
+    },
+    "COMP2550": {
+      "groups": [[{ "course": "COMP1110" }, { "course": "COMP1140" }]],
+      "incompatible": ["COMP4450"],
+      "manual": [
+        "you must be enrolled in the Bachelor of Advanced Computing (Research and Development) (Honours)"
+      ]
+    },
+    "COMP2610": { "incompatible": ["COMP6261", "ENGN8534"] },
+    "COMP2620": {
+      "groups": [[{ "units": 6, "subjects": ["MATH"] }, { "course": "COMP1600" }]],
+      "incompatible": ["PHIL2080", "COMP6262"]
+    },
+    "COMP2700": {
+      "groups": [
+        [{ "course": "COMP1100" }, { "course": "COMP1130" }],
+        [{ "course": "COMP1600" }, { "units": 6, "subjects": ["MATH"] }]
+      ]
+    },
+    "COMP2710": {
+      "manual": [
+        "Pre-requisite courses for the Advanced Topic will be listed on the Special Topics in Computing webpage when the course topic is announced. Students who meet the pre-requisites can request a permission code following the instructions on the College webpage."
+      ]
+    },
+    "COMP3242": {
+      "groups": [
+        [
+          { "course": "COMP3670" },
+          { "course": "MATH1013" },
+          { "course": "MATH1014" },
+          { "course": "MATH1115" },
+          { "course": "MATH1116" }
+        ],
+        [{ "course": "COMP1110" }, { "course": "COMP1140" }]
+      ],
+      "incompatible": ["COMP6242"],
+      "reading": "\"6 units of (a or b or ...)\" is read as one of those courses, since each is 6 units."
+    },
+    "COMP3300": {
+      "groups": [[{ "course": "COMP2310" }]],
+      "incompatible": ["COMP6330"]
+    },
+    "COMP3310": {
+      "groups": [
+        [{ "course": "COMP2100" }, { "course": "COMP2300" }],
+        [{ "units": 6, "subjects": ["COMP"], "levels": [2000] }]
+      ],
+      "incompatible": ["COMP6331", "ENGN3539", "ENGN6539"]
+    },
+    "COMP3320": {
+      "groups": [
+        [{ "course": "COMP2100" }, { "course": "COMP2300" }, { "course": "ENGN2219" }],
+        [{ "course": "COMP1600" }, { "units": 6, "subjects": ["MATH"], "excluding": ["MATH1003"] }]
+      ],
+      "incompatible": ["COMP6464"]
+    },
+    "COMP3425": {
+      "groups": [
+        [{ "course": "COMP1100" }, { "course": "COMP1130" }, { "course": "COMP1730" }],
+        [{ "course": "COMP2400" }]
+      ],
+      "incompatible": ["COMP3420", "COMP8400", "COMP8410", "COMP8910"]
+    },
+    "COMP3430": {
+      "groups": [
+        [{ "course": "COMP1030" }, { "course": "COMP1100" }, { "course": "COMP1130" }, { "course": "COMP1730" }],
+        [{ "course": "COMP1040" }, { "course": "COMP1110" }, { "course": "COMP1140" }],
+        [{ "course": "COMP2400" }]
+      ],
+      "incompatible": ["COMP8430", "COMP8930"],
+      "manual": ["Students are required to have completed introductory courses on databases, programming and algorithms."],
+      "reading": "\"COMP 1030\" and \"COMP 1040\" are written with a space; read as COMP1030 and COMP1040, which are not in the catalogue."
+    },
+    "COMP3500": {
+      "groups": [[{ "course": "COMP2100" }], [{ "course": "COMP2120" }]],
+      "incompatible": ["COMP3100", "COMP3820", "COMP4500", "COMP4820"],
+      "manual": [
+        "To enrol in this course you must meet the eligibility criteria, which includes membership of a student project group before the end of week 1, where the project has been approved by the convener.",
+        "You must also be studying: Bachelor of Engineering (Honours) in Software Engineering (AENSE) OR Bachelor of Computing (BCOMP)"
+      ]
+    },
+    "COMP3540": {
+      "groups": [[{ "units": 12, "subjects": ["COMP"], "levels": [2000] }]]
+    },
+    "COMP3600": {
+      "groups": [
+        [{ "units": 24, "subjects": ["COMP"] }],
+        [{ "units": 6, "subjects": ["MATH"] }, { "course": "COMP1600" }]
+      ],
+      "incompatible": ["COMP6466"]
+    },
+    "COMP3610": {
+      "groups": [
+        [{ "course": "COMP2100" }],
+        [{ "course": "COMP1600" }, { "units": 6, "subjects": ["MATH"], "excluding": ["MATH1003"] }]
+      ],
+      "incompatible": ["COMP6361"],
+      "reading": "\"MATHS\" is read as MATH."
+    },
+    "COMP3620": {
+      "groups": [
+        [{ "course": "COMP1110" }, { "course": "COMP1140" }],
+        [{ "course": "COMP2620", "concurrent": true }]
+      ],
+      "incompatible": ["COMP6320"],
+      "reading": "\"COMP1110 /1140\" is read as COMP1110 or COMP1140."
+    },
+    "COMP3630": {
+      "groups": [
+        [{ "units": 24, "subjects": ["COMP"] }],
+        [{ "units": 6, "subjects": ["MATH"] }, { "course": "COMP1600" }]
+      ],
+      "incompatible": ["COMP6363"]
+    },
+    "COMP3670": {
+      "groups": [[{ "course": "COMP1110" }, { "course": "COMP1140" }]],
+      "incompatible": ["COMP6670"]
+    },
+    "COMP3703": {
+      "groups": [
+        [{ "course": "COMP2300" }, { "course": "ENGN2219" }],
+        [{ "course": "COMP2700" }]
+      ],
+      "incompatible": ["COMP2710"],
+      "reading": "Read as (COMP2300 or ENGN2219) AND COMP2700."
+    },
+    "COMP3704": {
+      "groups": [
+        [{ "course": "COMP2700" }],
+        [{ "course": "COMP3310" }, { "course": "ENGN3539" }]
+      ],
+      "incompatible": ["COMP6034"],
+      "reading": "Read as COMP2700 AND (COMP3310 or ENGN3539)."
+    },
+    "COMP3710": {},
+    "COMP3740": {
+      "groups": [[{ "units": 72 }]],
+      "manual": [
+        "Students will receive a permission code by completing the steps listed on Enrolling in student projects including the Student Project Registration Form.",
+        "CoSM students must be studying a CSCI-MAJ to enrol in this course and count 6 units towards their 3000-level COMP course requirement."
+      ]
+    },
+    "COMP3770": {
+      "groups": [[{ "course": "COMP2550" }]],
+      "manual": [
+        "be studying Bachelor of Advanced Computing (Research and Development)",
+        "find a project/supervisor AND have received a permission code by having completed all the steps required for Enrolling in student projects including completing the Student Project Registration Form."
+      ]
+    },
+    "COMP3820": {
+      "groups": [[{ "course": "COMP2100" }], [{ "course": "COMP2120" }]],
+      "incompatible": ["COMP3500"],
+      "manual": [
+        "You will need to undergo competitive entry to enrol in this course, please see CECC webpage for more information."
+      ]
+    },
+    "COMP3900": {
+      "groups": [[{ "units": 12, "subjects": ["COMP"], "levels": [2000] }]],
+      "incompatible": ["COMP6390"]
+    },
+    "COMP4011": {
+      "groups": [[{ "units": 12, "subjects": ["COMP"], "levels": [3000, 4000] }]],
+      "manual": [
+        "Additional Prerequisite courses for the Advanced Topic will be listed on the SoCo website when the course topic is announced. Students who meet the pre-requisites can request a permission code following the instructions Enrolling in CECC courses."
+      ]
+    },
+    "COMP4020": {
+      "groups": [[{ "course": "COMP3900" }]],
+      "manual": [
+        "Additional Prerequisite courses for the Advanced Topic will be listed on the SoCo website when the course topic is announced. Students who meet the prerequisites can request a permission code from the College."
+      ]
+    },
+    "COMP4045": {
+      "groups": [[{ "units": 12, "subjects": ["COMP"], "levels": [3000, 4000] }]],
+      "manual": [
+        "Additional Prerequisite courses for the Advanced Topic will be listed on the SoCo website when the course topic is announced. Students who meet the pre-requisites can request a permission code following the instructions Enrolling in CECC courses."
+      ]
+    },
+    "COMP4130": {
+      "groups": [
+        [{ "course": "COMP2120" }],
+        [{ "units": 12, "subjects": ["COMP"], "levels": [2000] }]
+      ],
+      "incompatible": ["COMP8131"]
+    },
+    "COMP4300": {
+      "groups": [[{ "course": "COMP2310" }]],
+      "incompatible": ["COMP8300"]
+    },
+    "COMP4350": {
+      "groups": [
+        [
+          { "units": 12, "subjects": ["COMP"], "levels": [2000] },
+          { "units": 12, "subjects": ["MUSI", "DESN", "ARTV"], "levels": [2000] }
+        ],
+        [{ "units": 12, "subjects": ["COMP"], "levels": [2000] }, { "course": "COMP1720" }]
+      ],
+      "incompatible": ["COMP8350"],
+      "reading": "Read as 12 units of 2000-level COMP, or else 12 units of 2000-level MUSI, DESN or ARTV together with COMP1720."
+    },
+    "COMP4425": {
+      "groups": [
+        [{ "course": "COMP1100" }, { "course": "COMP1130" }, { "course": "COMP1730" }],
+        [{ "course": "COMP2400" }]
+      ],
+      "incompatible": ["COMP3425", "COMP8400", "COMP8410", "COMP8910"]
+    },
+    "COMP4450": {
+      "incompatible": ["COMP2550", "COMP6445"],
+      "manual": [
+        "To enrol in this course you must be enrolled in the: Bachelor of Computing (Honours) (HCOMP) OR Bachelor of Applied Data Analytics (Honours) (HADAN) OR Computer Science Honours Specialisation (COMP-HSPC) OR (Bachelor of Advanced Computing (AACOM) AND have successfully completed 24 units of COMP coded courses)"
+      ],
+      "reading": "Every path depends on the degree a student is enrolled in, which a plan does not record, so the whole condition is left to the student."
+    },
+    "COMP4500": {
+      "incompatible": ["COMP4540", "COMP4550", "COMP4810", "COMP4820"],
+      "manual": [
+        "To enrol in this course you must meet the eligibility criteria, which includes membership of a student project group before the end of week 1, where the project has been approved by the convener.",
+        "You also must be studying: Bachelor of Advanced Computing (AACOM) AND have completed: COMP2120 AND 12 units of 3000 and/or 4000 level courses. OR Bachelor of Engineering (Honours) in Software Engineering (AENSE) AND have completed: COMP3500."
+      ],
+      "reading": "The course requirements differ by degree, which a plan does not record, so they are left to the student."
+    },
+    "COMP4528": {
+      "groups": [
+        [{ "course": "ENGN2228" }, { "course": "COMP2120" }, { "course": "COMP3600" }, { "course": "COMP3670" }]
+      ],
+      "incompatible": ["ENGN6528", "ENGN4528"]
+    },
+    "COMP4550": {
+      "groups": [[{ "course": "COMP2550" }, { "course": "COMP4450", "concurrent": true }]],
+      "incompatible": ["COMP4500", "COMP4560", "COMP4810", "COMP4820"],
+      "manual": [
+        "find a project/supervisor AND have a weighted average mark equivalent to an ANU 70 per cent calculated from the 36 units of courses with the highest marks in cognate disciplines (excluding 1000-level courses) AND have received a permission code by having completed all the steps required for Enrolling in student projects including completing the Student Project Registration Form."
+      ],
+      "reading": "Read as (COMP2550, or COMP4450 in the same semester or earlier) AND the conditions left to the student."
+    },
+    "COMP4600": {
+      "groups": [
+        [{ "course": "COMP3600" }],
+        [{ "units": 18, "subjects": ["COMP"], "levels": [3000] }]
+      ],
+      "incompatible": ["COMP8460"]
+    },
+    "COMP4610": {
+      "groups": [
+        [{ "course": "COMP2100" }],
+        [{ "course": "COMP3600" }, { "course": "COMP3540" }, { "course": "COMP3900" }, { "course": "COMP3320" }]
+      ],
+      "incompatible": ["COMP6461", "COMP8610"],
+      "reading": "\"6 units of (a or b or ...)\" is read as one of those courses, since each is 6 units."
+    },
+    "COMP4620": {
+      "groups": [[{ "units": 12, "subjects": ["COMP"], "levels": [3000, 4000] }]],
+      "incompatible": ["COMP8620"],
+      "manual": [
+        "Additional Prerequisite courses for the Advanced Topic will be listed on the SoCo website (Special Topics in Computing page) when the course topic is announced. Students who meet the pre-requisites can request a permission code following the instructions for Enrolling in CSS courses."
+      ]
+    },
+    "COMP4650": {
+      "groups": [
+        [{ "course": "COMP1600" }, { "course": "COMP2100" }],
+        [{ "units": 12, "subjects": ["COMP", "INFS"], "levels": [3000, 4000] }]
+      ],
+      "incompatible": ["COMP6490"]
+    },
+    "COMP4670": {
+      "groups": [
+        [{ "course": "COMP3670" }, { "course": "COMP1110" }, { "course": "COMP1140" }],
+        [{ "course": "COMP3670" }, { "course": "MATH1014" }, { "course": "MATH1115" }, { "course": "MATH1116" }]
+      ],
+      "incompatible": ["COMP8600", "COMP8960"],
+      "reading": "Read as COMP3670, or else (COMP1110 or COMP1140) together with one of MATH1014, MATH1115 or MATH1116; written here as two groups that each accept COMP3670."
+    },
+    "COMP4680": {
+      "groups": [[{ "units": 12, "subjects": ["COMP"], "levels": [3000, 4000] }]],
+      "incompatible": ["COMP8650"],
+      "manual": [
+        "Additional Prerequisite courses for the Advanced Topic will be listed on the SoCo website (Special Topics in Computing page) when the course topic is announced. Students who meet the pre-requisites can request a permission code following the instructions for Enrolling in CECC courses."
+      ]
+    },
+    "COMP4691": {
+      "groups": [[{ "course": "COMP3620" }], [{ "course": "MATH1013" }, { "course": "MATH1115" }]],
+      "incompatible": ["COMP8691"]
+    },
+    "COMP4703": {
+      "groups": [[{ "course": "COMP2310" }], [{ "course": "COMP2700" }]],
+      "incompatible": ["COMP2710", "COMP3703", "COMP8703"]
+    },
+    "COMP4712": {
+      "groups": [
+        [{ "course": "COMP2100" }],
+        [{ "course": "COMP2310" }],
+        [{ "units": 6, "subjects": ["COMP"], "levels": [3000, 4000] }]
+      ],
+      "incompatible": ["COMP3710"],
+      "manual": ["Students who have previously completed COMP3710 - please contact CECC Student Services for a Permission Code."]
+    },
+    "COMP4820": {
+      "groups": [
+        [{ "course": "COMP2100" }],
+        [{ "units": 12, "subjects": ["COMP"], "levels": [3000] }]
+      ],
+      "incompatible": ["COMP4500", "COMP4550", "COMP4560", "COMP4810"],
+      "manual": [
+        "To enrol in this course you must be studying a Bachelor of Advanced Computing",
+        "Competitive entry based on application and interviews with Hosts."
+      ]
+    },
+    "COMP4880": {
+      "groups": [
+        [{ "course": "COMP3670" }, { "course": "COMP1110" }, { "course": "COMP1140" }],
+        [{ "course": "COMP3670" }, { "course": "MATH1014" }, { "course": "MATH1115" }]
+      ],
+      "incompatible": ["COMP8880"],
+      "reading": "Read as COMP3670, or else (COMP1110 or COMP1140) together with MATH1014 or MATH1115; written here as two groups that each accept COMP3670."
+    },
+    "ENGN2219": {
+      "groups": [[{ "course": "COMP1100" }, { "course": "COMP1130" }, { "course": "COMP1730" }]],
+      "incompatible": ["COMP2300", "COMP6300", "COMP6719"]
+    },
+    "ENGN2228": {
+      "groups": [
+        [{ "course": "MATH1013" }, { "course": "MATH1014" }, { "course": "MATH1115" }, { "course": "MATH1116" }]
+      ]
+    },
+    "ENGN3539": {
+      "groups": [[{ "course": "ENGN2219" }]],
+      "incompatible": ["COMP3310", "COMP6331", "ENGN6539"]
+    },
+    "INFS1001": {},
+    "MATH1003": { "incompatible": ["MATH1013", "MATH1113", "MATH1115"] },
+    "MATH1005": { "incompatible": ["MATH6005"] },
+    "MATH1013": { "incompatible": ["MATH1113", "MATH1115"] },
+    "MATH1014": {
+      "groups": [[{ "course": "MATH1013" }, { "course": "MATH1115" }, { "course": "MATH1113" }]],
+      "incompatible": ["MATH1116"]
+    },
+    "MATH1113": { "incompatible": ["MATH1013", "MATH1115"] },
+    "MATH1115": {
+      "manual": [
+        "If you have previously completed MATH1013 or MATH1113 then you can only enrol in MATH1115 with the permission of the course convener."
+      ]
+    },
+    "MATH1116": {
+      "groups": [[{ "course": "MATH1115" }, { "course": "MATH1113" }]],
+      "incompatible": ["MATH1014"],
+      "manual": [
+        "To enrol in this course you must have completed MATH1115 with a mark of 60 or above or MATH1113 with a mark of 80 or above."
+      ],
+      "reading": "The course part is checked; the mark it needs is left to the student."
+    }
+  }
+}
