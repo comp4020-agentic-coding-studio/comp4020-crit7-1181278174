@@ -57,9 +57,34 @@ prototype will. What this one does differently is below.
 
 ## Not building
 
-Degree and major requirements; summer and winter sessions; grades and WAM;
-timetables and tutorials; logins; drag and drop (forms instead, which work on a
-phone, with a keyboard and without JavaScript); importing from ANUHub.
+Deciding whether a degree or major is complete; majors outside computing;
+summer and winter sessions; grades and WAM; timetables and tutorials; logins;
+drag and drop (forms instead, which work on a phone, with a keyboard and
+without JavaScript); importing from ANUHub.
+
+## Second version (decided 30 September, 04:00)
+
+The first interface was too plain, and two views were missing: what each major
+requires, and how courses lead to one another. All three were drawn on a
+design canvas first, with real data, then built.
+
+- **The look**: warm paper, ink and one teal accent; Fraunces for headings,
+  IBM Plex Sans for text, IBM Plex Mono for course codes. On the plan page,
+  finished semesters fold into one band, a side column lists the problems and
+  the notes to check, and a missing prerequisite offers a button that adds it
+  to the semester it fits.
+- **Majors** (`/majors/`): the seven computing majors the Bachelor of Computing
+  lists. `scripts/fetch-majors.ts` reads each 2027 major page into blocks in
+  P&C's words, each with its course lines; tests hold every block and line to
+  the page text. A major can be compared with a plan: the page marks which
+  listed courses the plan has and adds up their units per block. It does not
+  decide whether the major is complete.
+- **Course map** (`/map/`): one course in the middle, what it needs first on
+  the left (one level further back too), and the courses that name it on the
+  right. For those, only what they still need once this course is done: a
+  group this course meets by itself is left out (COMP2100 is itself 6 units of
+  2000-level COMP, so COMP3310 needs nothing else). The overview lists every
+  course by level.
 
 ## Data
 
