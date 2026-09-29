@@ -51,6 +51,8 @@ export type Problem = {
   message: string;
   source: string;
   hint?: string;
+  // a course that would meet the rule, and a semester of this plan it fits
+  fix?: { code: string; term: Term };
 };
 export type Note = { kind: "manual" | "unpublished" | "unchecked"; message: string };
 
@@ -158,7 +160,7 @@ function hintFor(
   catalogue: Catalogue,
   terms: TermCheck[],
   at: number,
-): string | undefined {
+): { hint: string; fix: { code: string; term: Term } } | undefined {
   for (const option of group) {
     if (option.kind !== "course") continue;
     const course = catalogue.courses.get(option.code);
@@ -170,7 +172,12 @@ function hintFor(
         course.offerings[t.term.year]?.includes(t.term.session),
     );
     const latest = fits.at(-1);
-    if (latest) return `${option.code} runs in ${termLabel(latest.term)}, which is in this plan.`;
+    if (latest) {
+      return {
+        hint: `${option.code} runs in ${termLabel(latest.term)}, which is in this plan.`,
+        fix: { code: option.code, term: latest.term },
+      };
+    }
   }
   return undefined;
 }
@@ -243,7 +250,7 @@ export function checkPlan(plan: PlanShape, catalogue: Catalogue, now: Date): Pla
           kind: "prerequisite",
           message: describeGroup(group, plan.courses, at),
           source: course.sourceUrl,
-          hint: hintFor(group, catalogue, terms, at),
+          ...hintFor(group, catalogue, terms, at),
         });
       }
 
