@@ -57,7 +57,7 @@ describe("a plan", () => {
     const after = await placed(id, "2027-S1");
     expect(after).not.toContain("Needs");
     // what P&C adds for BSC and ASCAD students is left to the student
-    expect(after).toContain("Check the note");
+    expect(after).toContain("Check note");
   });
 
   it("flags a course in a semester it doesn't run in", async () => {

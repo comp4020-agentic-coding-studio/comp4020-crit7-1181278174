@@ -11,6 +11,6 @@ const title = readme.getHeadings().find((h) => h.depth === 1)?.text ?? "README";
 const html = (await readme.compiledContent()).replace(/(src|href)="public\//g, '$1="/');
 ---
 
-<Layout title={`${title} · About`}>
+<Layout title={`${title} · About`} narrow>
   <article set:html={html} />
 </Layout>

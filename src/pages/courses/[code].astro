@@ -1,4 +1,5 @@
 ---
+import Icon from "../../components/Icon.astro";
 import Layout from "../../layouts/Layout.astro";
 import { catalogue, leadsTo } from "../../lib/catalogue";
 import { type Option, describeUnits } from "../../lib/check";
@@ -15,16 +16,12 @@ const read = course
       timeZone: "Australia/Sydney",
     })
   : "";
-const describe = (option: Option) =>
-  option.kind === "units"
-    ? describeUnits(option)
-    : `${option.code}${option.concurrent ? " (may be taken in the same semester)" : ""}`;
-const inCatalogue = (c: string) => catalogue.courses.has(c);
 const next = course ? leadsTo(course.code) : [];
-const patterns = course ? new Set(catalogue.years.map((y) => (course.offerings[y] ?? []).join())) : new Set();
+const changes = course ? new Set(catalogue.years.map((y) => (course.offerings[y] ?? []).join())).size > 1 : false;
+const unitsOf = (option: Option) => (option.kind === "units" ? describeUnits(option) : "");
 ---
 
-<Layout title={course ? `${course.code} ${course.title} · Semester planner` : "Course not found · Semester planner"}>
+<Layout title={course ? `${course.code} ${course.title} · Semester Planner` : "Course not found · Semester Planner"}>
   {
     !course ? (
       <>
@@ -36,100 +33,158 @@ const patterns = course ? new Set(catalogue.years.map((y) => (course.offerings[y
       </>
     ) : (
       <>
-        <h1>
-          {course.code} {course.title}
-        </h1>
-        <p>
-          {course.units} units · <a href={course.sourceUrl}>{course.code} on P&amp;C ({course.rulesYear})</a> · read
-          on {read}
+        <p class="crumbs">
+          <a href="/courses/">Courses</a> <span aria-hidden="true">/</span> {course.code}
         </p>
+        <span class="code" style="color: var(--accent); font-size: 18px">
+          {course.code}
+        </span>
+        <h1>{course.title}</h1>
+        <ul class="chips">
+          <li>{course.units} units</li>
+          <li>{course.level}-level</li>
+          <li>Rules as P&amp;C publishes them for {course.rulesYear}</li>
+          <li>
+            <a href={course.sourceUrl}>Read from P&amp;C on {read} ↗</a>
+          </li>
+          <li>
+            <a href={`/map/${course.code}`}>See it on the course map</a>
+          </li>
+        </ul>
 
-        <h2>When it runs</h2>
-        <table>
-          <caption class="vh">Semesters {course.code} is offered in, by year</caption>
-          <thead>
-            <tr>
-              <th scope="col">Year</th>
-              <th scope="col">Offered</th>
-            </tr>
-          </thead>
-          <tbody>
+        <section class="card" aria-labelledby="runs-h" style="margin-top: 24px">
+          <div class="block-head">
+            <h2 id="runs-h" style="margin: 0; font-size: 22px">
+              When it runs
+            </h2>
+            <span class="help" style="font-size: 14px">
+              From the class tab of the P&amp;C page{changes ? " · the semesters change between years" : ""} · future years are indicative
+            </span>
+          </div>
+          <div class="runs" style="margin-top: 12px">
             {catalogue.years.map((year) => (
-              <tr>
-                <th scope="row">{year}</th>
-                <td>
-                  {(course.offerings[year] ?? []).map((s) => (s === "S1" ? "Semester 1" : "Semester 2")).join(" and ") ||
-                    "Not offered"}
-                </td>
-              </tr>
+              <div class="year">
+                <span class="mono" style="font-weight: 600">
+                  {year}
+                </span>
+                <div class="cells">
+                  {(["S1", "S2"] as const).map((s) =>
+                    (course.offerings[year] ?? []).includes(s) ? (
+                      <span class="cell on">
+                        <Icon name="check" />
+                        Semester {s === "S1" ? "1" : "2"}
+                      </span>
+                    ) : (
+                      <span class="cell off">No Semester {s === "S1" ? "1" : "2"}</span>
+                    ),
+                  )}
+                </div>
+              </div>
             ))}
-          </tbody>
-        </table>
-        <p class="help">
-          From the class tab of the P&amp;C page. {patterns.size > 1 && "The semesters change between years. "}P&amp;C calls
-          offerings for future years indicative only.
-        </p>
+          </div>
+        </section>
 
-        <h2>What P&amp;C says</h2>
-        {course.requisiteText ? (
-          <blockquote>{course.requisiteText}</blockquote>
-        ) : (
-          <p>P&amp;C lists no requisites for this course.</p>
-        )}
-
-        <h2>How this planner reads it</h2>
-        {course.groups.length === 0 ? (
-          <p>No prerequisites to check.</p>
-        ) : (
-          <>
-            <p>Every one of these, before the semester you take it:</p>
-            <ul>
-              {course.groups.map((group) => (
-                <li>{group.length === 1 ? describe(group[0]!) : `one of: ${group.map(describe).join("; ")}`}</li>
-              ))}
-            </ul>
-          </>
-        )}
-        {course.incompatible.length > 0 && (
-          <p>
-            Can't be combined with:{" "}
-            {course.incompatible.map((c, i) => (
+        <div class="two-col">
+          <section class="card" aria-labelledby="says-h">
+            <h2 id="says-h">What P&amp;C says</h2>
+            {course.requisiteText ? (
+              <blockquote class="pc">{course.requisiteText}</blockquote>
+            ) : (
+              <p>P&amp;C lists no requisites for this course.</p>
+            )}
+            <a href={course.sourceUrl} style="font-size: 14px; font-weight: 500">
+              Open {course.code} on P&amp;C ({course.rulesYear}) ↗
+            </a>
+          </section>
+          <section class="card" aria-labelledby="reads-h">
+            <h2 id="reads-h">How the planner reads it</h2>
+            {course.groups.length === 0 ? (
+              <p>No prerequisites to check.</p>
+            ) : (
               <>
-                {i > 0 && ", "}
-                {inCatalogue(c) ? <a href={`/courses/${c}`}>{c}</a> : c}
+                <p class="help">All of these, in an earlier semester of your plan:</p>
+                <ol style="list-style: none; padding: 0; margin: 12px 0 0">
+                  {course.groups.map((group, i) => (
+                    <li class="rule-box">
+                      <span class="mono">
+                        {i + 1} · {group.length > 1 ? "ONE OF" : group[0]?.kind === "units" ? "UNITS" : "COURSE"}
+                      </span>
+                      {group.map((option) =>
+                        option.kind === "course" ? (
+                          catalogue.courses.has(option.code) ? (
+                            <a class="code-chip" href={`/courses/${option.code}`}>
+                              {option.code}
+                            </a>
+                          ) : (
+                            <span class="code-chip">{option.code}</span>
+                          )
+                        ) : (
+                          <span style="font-weight: 500">{unitsOf(option)}</span>
+                        ),
+                      )}
+                      {group.some((o) => o.kind === "course" && o.concurrent) && (
+                        <span class="help" style="font-size: 13px">
+                          may be taken in the same semester
+                        </span>
+                      )}
+                    </li>
+                  ))}
+                </ol>
               </>
-            ))}
-            .
-          </p>
-        )}
-        {course.reading && <p class="help">How the sentence was read: {course.reading}</p>}
+            )}
+            {course.incompatible.length > 0 && (
+              <p>
+                Can't be combined with{" "}
+                {course.incompatible.map((c, i) => (
+                  <>
+                    {i > 0 && ", "}
+                    {catalogue.courses.has(c) ? (
+                      <a class="code" href={`/courses/${c}`}>
+                        {c}
+                      </a>
+                    ) : (
+                      <span class="code">{c}</span>
+                    )}
+                  </>
+                ))}
+                .
+              </p>
+            )}
+            {course.reading && <p class="help">How the sentence was read: {course.reading}</p>}
+          </section>
+        </div>
 
         {course.manual.length > 0 && (
-          <>
-            <h2>Left for you to check</h2>
-            <p>The planner can't check these, so a plan never passes or fails on them:</p>
+          <section class="left-box" aria-labelledby="left-h">
+            <h2 id="left-h">Left for you to check</h2>
+            <p style="margin: 0 0 6px">The planner can't check these, so a plan never passes or fails on them:</p>
             <ul>
               {course.manual.map((excerpt) => (
                 <li>“{excerpt}”</li>
               ))}
             </ul>
-          </>
+          </section>
         )}
 
-        <h2>What it leads to</h2>
-        {next.length === 0 ? (
-          <p>No course in this planner names {course.code} as a prerequisite.</p>
-        ) : (
-          <p>
-            Named as a prerequisite by{" "}
-            {next.map((c, i) => (
-              <>
-                {i > 0 && ", "}
-                <a href={`/courses/${c}`}>{c}</a>
-              </>
+        <div class="section-head">
+          <h2>What it leads to</h2>
+          <span>
+            {next.length === 0
+              ? `No course in this planner names ${course.code} as a prerequisite`
+              : `${next.length} course${next.length === 1 ? " names" : "s name"} ${course.code} as a prerequisite`}
+          </span>
+        </div>
+        {next.length > 0 && (
+          <ul class="course-cards">
+            {next.map((c) => (
+              <li>
+                <a class="course-card" href={`/courses/${c}`}>
+                  <span class="code">{c}</span>
+                  <span>{catalogue.courses.get(c)?.title}</span>
+                </a>
+              </li>
             ))}
-            .
-          </p>
+          </ul>
         )}
       </>
     )

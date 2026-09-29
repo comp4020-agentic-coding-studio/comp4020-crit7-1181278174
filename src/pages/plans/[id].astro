@@ -1,7 +1,9 @@
 ---
+import Icon from "../../components/Icon.astro";
 import Layout from "../../layouts/Layout.astro";
 import { catalogue } from "../../lib/catalogue";
-import { type CourseCheck, type Term, LOAD_LIMIT, shortLabel, termLabel } from "../../lib/check";
+import { type CourseCheck, type Term, type TermCheck, LOAD_LIMIT, shortLabel } from "../../lib/check";
+import { allMajors } from "../../lib/majors";
 import { REFUSALS, type Refusal, check, getPlan } from "../../lib/plans";
 
 const plan = getPlan(Astro.params.id ?? "");
@@ -19,19 +21,41 @@ const refusalText =
 
 const key = (t: Term) => `${t.year}-${t.session}`;
 const address = plan ? new URL(`/plans/${plan.id}`, Astro.url).href : "";
-const courseCount = plan?.courses.length ?? 0;
+const terms = result?.terms ?? [];
+const past = terms.filter((t) => t.past);
+const future = terms.filter((t) => !t.past);
+const years = [...new Set(future.map((t) => t.term.year))].map((year) => ({
+  year,
+  terms: future.filter((t) => t.term.year === year),
+}));
+const all = terms.flatMap((t) => t.courses);
+const problems = future.flatMap((t) => [
+  ...(t.overload ? [{ code: "", term: t.term, message: t.overload.message }] : []),
+  ...t.courses.flatMap((c) => c.problems.map((p) => ({ code: c.code, term: t.term, message: p.message }))),
+]);
+const notes = future.flatMap((t) =>
+  t.courses.flatMap((c) => c.notes.filter((n) => n.kind === "manual").map((n) => ({ code: c.code, term: t.term, message: n.message }))),
+);
+const pastUnits = past.reduce((sum, t) => sum + t.units, 0);
+const pastCourses = past.reduce((sum, t) => sum + t.courses.length, 0);
 
-function status(c: CourseCheck, past: boolean): { text: string; tone: string } {
-  if (!catalogue.courses.has(c.code)) return { text: "Not checked", tone: "plain" };
-  if (past) return { text: "Done", tone: "plain" };
-  if (c.problems.length) return { text: `✗ ${c.problems.length} problem${c.problems.length > 1 ? "s" : ""}`, tone: "bad" };
-  if (c.notes.some((n) => n.kind === "manual")) return { text: "! Check the note", tone: "check" };
-  if (c.notes.some((n) => n.kind === "unpublished")) return { text: "? Not published", tone: "check" };
-  return { text: "✓ Can go here", tone: "ok" };
+function status(c: CourseCheck): { text: string; tone: string; icon: "check" | "x" | "alert" | null } {
+  if (!catalogue.courses.has(c.code)) return { text: "Not checked", tone: "plain", icon: null };
+  if (c.problems.length > 1) return { text: `${c.problems.length} problems`, tone: "bad", icon: "x" };
+  const first = c.problems[0];
+  if (first) {
+    const text = { offering: "Not offered", prerequisite: "Missing prerequisite", incompatible: "Incompatible", load: "Problem" }[first.kind];
+    return { text, tone: "bad", icon: "x" };
+  }
+  if (c.notes.some((n) => n.kind === "manual")) return { text: "Check note", tone: "warn", icon: "alert" };
+  if (c.notes.some((n) => n.kind === "unpublished")) return { text: "Not published", tone: "plain", icon: null };
+  return { text: "Can go here", tone: "ok", icon: "check" };
 }
+const offeringsTag = (t: TermCheck) =>
+  !t.published ? "Offerings not published yet" : t.indicative ? "Offerings indicative · P&C" : "Offerings as published";
 ---
 
-<Layout title={plan ? `${plan.name} · Semester planner` : "No plan here · Semester planner"} wide>
+<Layout title={plan ? `${plan.name} · Semester Planner` : "No plan here · Semester Planner"}>
   {
     !plan || !result ? (
       <>
@@ -43,29 +67,29 @@ function status(c: CourseCheck, past: boolean): { text: string; tone: string } {
       </>
     ) : (
       <>
-        <h1>{plan.name}</h1>
-        <p class="summary">
-          <span>{courseCount} course{courseCount === 1 ? "" : "s"}</span>
-          <span>{result.totalUnits} units</span>
-          <span>
-            {result.problemCount === 0
-              ? "No problems found"
-              : `${result.problemCount} problem${result.problemCount === 1 ? "" : "s"} to fix`}
-          </span>
+        <p class="eyebrow">
+          Plan · {terms.length} semesters · {terms[0] && shortLabel(terms[0].term)} – {terms.at(-1) && shortLabel(terms.at(-1)!.term)}
         </p>
+        <div class="plan-head">
+          <h1>{plan.name}</h1>
+          {!plan.readOnly && (
+            <button class="btn quiet" type="button" data-copy={address} hidden>
+              <Icon name="link" size={16} /> Copy link
+            </button>
+          )}
+        </div>
         {plan.readOnly ? (
           <div class="message notice">
             <p>This example can't be changed. Copy it to make a plan of your own.</p>
             <form method="post" action="/api/plans">
               <input type="hidden" name="copy" value={plan.id} />
-              <button>Copy this plan</button>
+              <button class="btn">Copy this plan</button>
             </form>
           </div>
         ) : (
           <p class="help">
-            This plan has no login: its address is the only way back to it. Bookmark{" "}
-            <a href={address}>{address}</a> or send it to yourself. Anyone with it can change the
-            plan, and every open copy updates when it changes.
+            No login: <a href={address}>{address}</a> is the only way back to this plan, and anyone with
+            it can change it. Every open copy updates when it changes.
           </p>
         )}
         {refusalText && (
@@ -79,151 +103,322 @@ function status(c: CourseCheck, past: boolean): { text: string; tone: string } {
           </p>
         )}
 
-        <div class="terms">
-          {result.terms.map((t) => (
-            <section
-              class:list={["term", t.term.session === "S1" ? "s1" : "s2", { past: t.past }]}
-              id={`t-${key(t.term)}`}
-              aria-labelledby={`h-${key(t.term)}`}
-            >
-              <h2 id={`h-${key(t.term)}`}>{termLabel(t.term)}</h2>
-              <p class="meta">
-                {t.units}/{LOAD_LIMIT} units ·{" "}
-                {t.past
-                  ? "done or under way, not checked"
-                  : !t.published
-                    ? "offerings not published yet"
-                    : t.indicative
-                      ? "offerings indicative (P&C)"
-                      : "offerings as published"}
-              </p>
-              {t.overload && (
-                <p class="message error">
-                  {t.overload.message} <a href={t.overload.source}>ANU overload rules</a>
-                </p>
-              )}
+        <div class="stats">
+          <div class="tile">
+            <b>{all.length}</b>
+            <span>course{all.length === 1 ? "" : "s"}</span>
+          </div>
+          <div class="tile">
+            <b>{result.totalUnits}</b>
+            <span>units</span>
+          </div>
+          <div class:list={["tile", { bad: problems.length > 0 }]}>
+            <b>{problems.length}</b>
+            <span>problem{problems.length === 1 ? "" : "s"} to fix</span>
+          </div>
+          <div class:list={["tile", { warn: notes.length > 0 }]}>
+            <b>{notes.length}</b>
+            <span>note{notes.length === 1 ? "" : "s"} to check yourself</span>
+          </div>
+        </div>
 
-              {t.courses.length > 0 && (
-                <ul class="courses">
-                  {t.courses.map((c) => {
-                    const s = status(c, t.past);
-                    return (
-                      <li class="course">
-                        <div class="course-head">
-                          {catalogue.courses.has(c.code) ? (
-                            <a class="code" href={`/courses/${c.code}`}>
-                              {c.code}
-                            </a>
-                          ) : (
-                            <span class="code">{c.code}</span>
-                          )}
-                          {c.title && <span>{c.title}</span>}
-                          <span class="units">{c.units} units</span>
-                          <span class:list={["status", s.tone]}>{s.text}</span>
-                        </div>
-                        {(c.problems.length > 0 || c.notes.length > 0) && (
-                          <ul class="reasons">
-                            {c.problems.map((p) => (
-                              <li class="problem">
-                                <span class="tag">Problem:</span> {p.message}{" "}
-                                <a href={p.source}>
-                                  P&amp;C<span class="vh"> page for {c.code}</span>
-                                </a>
-                                {p.hint && <span class="hint">Fix: {p.hint}</span>}
-                              </li>
-                            ))}
-                            {c.notes.map((n) =>
-                              n.kind === "manual" ? (
-                                <li class="note">
-                                  <span class="tag">Check yourself:</span> “{n.message}”
-                                </li>
-                              ) : (
-                                <li class="note">{n.message}</li>
-                              ),
-                            )}
-                          </ul>
-                        )}
-                        {!plan.readOnly && (
-                          <div class="actions">
-                            <form method="post" action={`/api/plans/${plan.id}`}>
-                              <input type="hidden" name="intent" value="move" />
-                              <input type="hidden" name="code" value={c.code} />
-                              <input type="hidden" name="tab" value="" />
-                              <label>
-                                <span class="vh">Move {c.code} to</span>
-                                <select name="term">
-                                  {result.terms.map((other) => (
-                                    <option value={key(other.term)} selected={key(other.term) === key(t.term)}>
-                                      {shortLabel(other.term)}
-                                    </option>
-                                  ))}
-                                </select>
-                              </label>
-                              <button class="quiet">
-                                Move<span class="vh"> {c.code}</span>
-                              </button>
-                            </form>
-                            <form method="post" action={`/api/plans/${plan.id}`}>
-                              <input type="hidden" name="intent" value="remove" />
-                              <input type="hidden" name="code" value={c.code} />
-                              <input type="hidden" name="term" value={key(t.term)} />
-                              <input type="hidden" name="tab" value="" />
-                              <button class="quiet">
-                                Remove<span class="vh"> {c.code}</span>
-                              </button>
-                            </form>
-                          </div>
-                        )}
-                      </li>
-                    );
-                  })}
-                </ul>
-              )}
-
-              {!plan.readOnly && (
-                <form class="add" method="post" action={`/api/plans/${plan.id}`}>
-                  <input type="hidden" name="intent" value="add" />
-                  <input type="hidden" name="term" value={key(t.term)} />
-                  <input type="hidden" name="tab" value="" />
-                  <label for={`add-${key(t.term)}`}>Add a course to {shortLabel(t.term)}</label>
-                  <input
-                    id={`add-${key(t.term)}`}
-                    name="code"
-                    list="course-codes"
-                    required
-                    maxlength="9"
-                    autocomplete="off"
-                    placeholder="e.g. COMP2100"
-                  />
-                  <button>Add</button>
-                </form>
-              )}
-
-              {!plan.readOnly && t.eligible.length > 0 && (
-                <details>
-                  <summary>
-                    {t.eligible.length} more course{t.eligible.length === 1 ? "" : "s"} you could take in {shortLabel(t.term)}
-                  </summary>
-                  <form method="post" action={`/api/plans/${plan.id}`}>
-                    <input type="hidden" name="intent" value="add" />
-                    <input type="hidden" name="term" value={key(t.term)} />
-                    <input type="hidden" name="tab" value="" />
-                    <ul class="eligible">
-                      {t.eligible.map((code) => (
-                        <li>
-                          <button class="quiet" name="code" value={code}>
-                            Add<span class="vh"> {code}</span>
-                          </button>
-                          <a href={`/courses/${code}`}>{code}</a>
-                          <span>{catalogue.courses.get(code)?.title}</span>
-                        </li>
+        <div class="plan-layout">
+          <div>
+            {past.length > 0 && (
+              <details class="done-band" open>
+                <summary>
+                  <h2>Done or under way</h2>
+                  <span>
+                    {past.length} semester{past.length === 1 ? "" : "s"} · {pastCourses} course{pastCourses === 1 ? "" : "s"} · {pastUnits} units · not checked
+                  </span>
+                </summary>
+                <div class="done-terms">
+                  {past.map((t) => (
+                    <div class="done-term" id={`t-${key(t.term)}`}>
+                      <span class="mono">
+                        {shortLabel(t.term)} · {t.units} u
+                      </span>
+                      {t.courses.length === 0 && <span class="help">Nothing recorded</span>}
+                      {t.courses.map((c) => (
+                        <span id={`c-${c.code}`}>
+                          <span class="code">{c.code}</span> {c.title ?? "(outside the catalogue)"}
+                        </span>
                       ))}
-                    </ul>
+                    </div>
+                  ))}
+                </div>
+                {!plan.readOnly && (
+                  <form class="add-form" method="post" action={`/api/plans/${plan.id}`} style="border-top: 0; margin-top: 12px">
+                    <input type="hidden" name="intent" value="add" />
+                    <input type="hidden" name="tab" value="" />
+                    <label for="add-done">Record a course you've done or are doing</label>
+                    <div>
+                      <label class="vh" for="add-done-term">
+                        Semester
+                      </label>
+                      <select id="add-done-term" name="term">
+                        {past.map((t) => (
+                          <option value={key(t.term)} selected={t === past.at(-1)}>
+                            {shortLabel(t.term)}
+                          </option>
+                        ))}
+                      </select>
+                      <input id="add-done" class="code-in" name="code" list="course-codes" required maxlength="9" autocomplete="off" placeholder="e.g. COMP1100" />
+                      <button class="btn">Add</button>
+                    </div>
                   </form>
-                </details>
-              )}
+                )}
+              </details>
+            )}
+
+            {years.map(({ year, terms: yearTerms }) => (
+              <>
+                <div class="year-head">
+                  <h2>{year}</h2>
+                  {yearTerms[0] && <span class="tag">{offeringsTag(yearTerms[0])}</span>}
+                </div>
+                <div class="terms-grid">
+                  {yearTerms.map((t) => (
+                    <section
+                      class:list={["term", t.term.session === "S1" ? "s1" : "s2", { empty: t.courses.length === 0 }]}
+                      id={`t-${key(t.term)}`}
+                      aria-labelledby={`h-${key(t.term)}`}
+                    >
+                      <div class="term-head">
+                        <h3 id={`h-${key(t.term)}`}>
+                          Semester {t.term.session === "S1" ? "1" : "2"}
+                          <span class="vh"> {t.term.year}</span>
+                        </h3>
+                        <span class="mono">
+                          {t.units} / {LOAD_LIMIT} units
+                        </span>
+                      </div>
+                      <div class:list={["load", { over: t.units > LOAD_LIMIT }]}>
+                        <span style={`width: ${Math.min(100, (t.units / LOAD_LIMIT) * 100)}%`}></span>
+                      </div>
+                      {t.overload && (
+                        <p class="problem-box" style="margin: 0">
+                          {t.overload.message} <a href={t.overload.source}>ANU overload rules</a>
+                        </p>
+                      )}
+                      {t.courses.length === 0 && (
+                        <p class="help">
+                          Nothing planned yet.{" "}
+                          {t.eligible.length > 0 &&
+                            `${t.eligible.length} course${t.eligible.length === 1 ? " runs" : "s run"} this semester and fit what the plan has before it.`}
+                        </p>
+                      )}
+                      {t.courses.length > 0 && (
+                        <ul class="courses">
+                          {t.courses.map((c) => {
+                            const s = status(c);
+                            return (
+                              <li class="course" id={`c-${c.code}`}>
+                                <div class="course-line">
+                                  {catalogue.courses.has(c.code) ? (
+                                    <a class="code" href={`/courses/${c.code}`}>
+                                      {c.code}
+                                    </a>
+                                  ) : (
+                                    <span class="code">{c.code}</span>
+                                  )}
+                                  <span class="title">
+                                    {c.title ?? "Outside the catalogue"} <span class="units">· {c.units} u</span>
+                                  </span>
+                                  <span class:list={["pill", s.tone]}>
+                                    {s.icon && <Icon name={s.icon} size={13} />}
+                                    {s.text}
+                                  </span>
+                                </div>
+                                {c.problems.map((p) => (
+                                  <div class="problem-box">
+                                    <p>
+                                      <strong>{p.message}</strong>{" "}
+                                      <a href={p.source}>
+                                        P&amp;C<span class="vh"> page for {c.code}</span> ↗
+                                      </a>
+                                    </p>
+                                    {p.hint && <span class="fix">{p.hint}</span>}
+                                    {p.fix && !plan.readOnly && (
+                                      <form method="post" action={`/api/plans/${plan.id}`} class="row-actions">
+                                        <input type="hidden" name="intent" value="add" />
+                                        <input type="hidden" name="code" value={p.fix.code} />
+                                        <input type="hidden" name="term" value={key(p.fix.term)} />
+                                        <input type="hidden" name="tab" value="" />
+                                        <button class="btn small">
+                                          Add {p.fix.code} to {shortLabel(p.fix.term)}
+                                        </button>
+                                      </form>
+                                    )}
+                                  </div>
+                                ))}
+                                {c.notes.map((n) =>
+                                  n.kind === "manual" ? (
+                                    <div class="note-box">
+                                      <strong>Check yourself:</strong> “{n.message}”
+                                    </div>
+                                  ) : (
+                                    <p class="help" style="font-size: 14px">
+                                      {n.message}
+                                    </p>
+                                  ),
+                                )}
+                                {!plan.readOnly && (
+                                  <div class="row-actions">
+                                    <form method="post" action={`/api/plans/${plan.id}`}>
+                                      <input type="hidden" name="intent" value="move" />
+                                      <input type="hidden" name="code" value={c.code} />
+                                      <input type="hidden" name="tab" value="" />
+                                      <label>
+                                        <span class="vh">Move {c.code} to</span>
+                                        <select name="term">
+                                          {terms.map((other) => (
+                                            <option value={key(other.term)} selected={key(other.term) === key(t.term)}>
+                                              {shortLabel(other.term)}
+                                            </option>
+                                          ))}
+                                        </select>
+                                      </label>
+                                      <button class="btn quiet small">
+                                        Move<span class="vh"> {c.code}</span>
+                                      </button>
+                                    </form>
+                                    <form method="post" action={`/api/plans/${plan.id}`}>
+                                      <input type="hidden" name="intent" value="remove" />
+                                      <input type="hidden" name="code" value={c.code} />
+                                      <input type="hidden" name="term" value={key(t.term)} />
+                                      <input type="hidden" name="tab" value="" />
+                                      <button class="btn quiet small">
+                                        Remove<span class="vh"> {c.code}</span>
+                                      </button>
+                                    </form>
+                                    <a href={`/map/${c.code}`} style="font-size: 14px">
+                                      On the map<span class="vh"> for {c.code}</span>
+                                    </a>
+                                  </div>
+                                )}
+                              </li>
+                            );
+                          })}
+                        </ul>
+                      )}
+                      {!plan.readOnly && (
+                        <form class="add-form" method="post" action={`/api/plans/${plan.id}`}>
+                          <input type="hidden" name="intent" value="add" />
+                          <input type="hidden" name="term" value={key(t.term)} />
+                          <input type="hidden" name="tab" value="" />
+                          <label for={`add-${key(t.term)}`}>Add a course to {shortLabel(t.term)}</label>
+                          <div>
+                            <input id={`add-${key(t.term)}`} class="code-in" name="code" list="course-codes" required maxlength="9" autocomplete="off" placeholder="e.g. COMP2100" />
+                            <button class="btn">Add</button>
+                          </div>
+                        </form>
+                      )}
+                      {!plan.readOnly && t.eligible.length > 0 && (
+                        <details>
+                          <summary>
+                            {t.eligible.length} {t.courses.length ? "more " : ""}you could take in {shortLabel(t.term)}
+                          </summary>
+                          <form method="post" action={`/api/plans/${plan.id}`}>
+                            <input type="hidden" name="intent" value="add" />
+                            <input type="hidden" name="term" value={key(t.term)} />
+                            <input type="hidden" name="tab" value="" />
+                            <ul class="eligible">
+                              {t.eligible.map((code) => (
+                                <li>
+                                  <button name="code" value={code}>
+                                    <span class="plus" aria-hidden="true">+</span>
+                                    <span class="vh">Add </span>
+                                    <span class="code">{code}</span> {catalogue.courses.get(code)?.title}
+                                  </button>
+                                </li>
+                              ))}
+                            </ul>
+                          </form>
+                        </details>
+                      )}
+                    </section>
+                  ))}
+                </div>
+              </>
+            ))}
+          </div>
+
+          <aside class="plan-aside" aria-label="Plan summary">
+            <section class="card" aria-labelledby="fix-h">
+              <h2 id="fix-h" style={problems.length ? "color: var(--bad)" : undefined}>
+                {problems.length === 0 ? "No problems found" : `${problems.length} problem${problems.length === 1 ? "" : "s"} to fix`}
+              </h2>
+              {problems.length === 0 && <p class="help">Every course in a future semester can go where it is.</p>}
+              {problems.map((p) => (
+                <a class="jump bad" href={p.code ? `#c-${p.code}` : `#t-${key(p.term)}`}>
+                  <span class="code">
+                    {p.code ? `${p.code} · ` : ""}
+                    {shortLabel(p.term)}
+                  </span>
+                  <span>{p.message}</span>
+                </a>
+              ))}
             </section>
-          ))}
+            {notes.length > 0 && (
+              <section class="card" aria-labelledby="check-h">
+                <h2 id="check-h" style="color: var(--warn)">
+                  {notes.length} note{notes.length === 1 ? "" : "s"} to check yourself
+                </h2>
+                <p class="help" style="font-size: 14px">
+                  Conditions P&amp;C states that a plan can't show: permission codes, your degree, marks.
+                </p>
+                {notes.map((n) => (
+                  <a class="jump warn" href={`#c-${n.code}`}>
+                    <span class="code">
+                      {n.code} · {shortLabel(n.term)}
+                    </span>
+                    <span>{n.message.length > 90 ? `${n.message.slice(0, 88)}…` : n.message}</span>
+                  </a>
+                ))}
+              </section>
+            )}
+            <section class="card" aria-labelledby="major-h">
+              <h2 id="major-h">Compare with a major</h2>
+              <p class="help" style="font-size: 14px">See which courses a major lists are in this plan.</p>
+              <ul style="margin: 8px 0 0; padding-left: 18px; font-size: 15px; line-height: 1.8">
+                {allMajors.map((m) => (
+                  <li>
+                    <a href={`/majors/${m.code}?plan=${plan.id}`}>{m.title}</a>
+                  </li>
+                ))}
+              </ul>
+            </section>
+            <section class="card legend-card" aria-labelledby="key-h">
+              <h2 id="key-h">How to read a plan</h2>
+              <div class="legend">
+                <div>
+                  <span class="pill ok">
+                    <Icon name="check" size={12} />
+                    Can go here
+                  </span>
+                  <span>rules met, runs that semester</span>
+                </div>
+                <div>
+                  <span class="pill bad">
+                    <Icon name="x" size={12} />
+                    Problem
+                  </span>
+                  <span>a rule P&amp;C states is broken</span>
+                </div>
+                <div>
+                  <span class="pill warn">
+                    <Icon name="alert" size={12} />
+                    Check note
+                  </span>
+                  <span>something only you can confirm</span>
+                </div>
+              </div>
+              <p class="help" style="font-size: 14px; margin-top: 10px">
+                Semesters up to now are taken as done and not checked.
+              </p>
+            </section>
+          </aside>
         </div>
 
         <datalist id="course-codes">
@@ -251,6 +446,15 @@ function status(c: CourseCheck, past: boolean): { text: string; tone: string } {
             const change = JSON.parse(event.data);
             if (change.id === planId && change.by !== tab) location.reload();
           });
+          // The copy button needs the clipboard, so it only appears with JavaScript.
+          const copy = document.querySelector("[data-copy]");
+          if (copy && navigator.clipboard) {
+            copy.hidden = false;
+            copy.addEventListener("click", async () => {
+              await navigator.clipboard.writeText(copy.dataset.copy);
+              copy.lastChild.textContent = " Copied";
+            });
+          }
         </script>
       </>
     )

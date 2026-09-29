@@ -1,38 +1,46 @@
 ---
 import Layout from "../../layouts/Layout.astro";
 import { catalogue } from "../../lib/catalogue";
+import { runsText } from "../../lib/map";
 
-const sessionsText = (sessions: string[] | undefined) =>
-  sessions?.length ? sessions.join(" and ") : "not offered";
 const courses = [...catalogue.courses.values()];
-const changing = courses.filter((c) => {
-  const patterns = catalogue.years.map((y) => (c.offerings[y] ?? []).join());
-  return new Set(patterns).size > 1;
-});
+const changing = new Set(
+  courses
+    .filter((c) => new Set(catalogue.years.map((y) => (c.offerings[y] ?? []).join())).size > 1)
+    .map((c) => c.code),
+);
+const levels = [1000, 2000, 3000, 4000].map((level) => ({ level, courses: courses.filter((c) => c.level === level) }));
 ---
 
-<Layout
-  title="Courses · Semester planner"
-  description="The courses this planner checks, with the semesters each runs in from 2026 to 2028."
->
+<Layout title="Courses · Semester Planner" description="The courses this planner checks, with the semesters each runs in from 2026 to 2028.">
   <h1>The courses this planner knows</h1>
-  <p>
+  <p class="lede">
     {courses.length} courses: the undergraduate COMP courses, and the MATH, ENGN and INFS courses their
-    prerequisites name. {changing.length} of them run in different semesters from one year to the next,
+    prerequisites name. {changing.size} of them run in different semesters from one year to the next,
     marked below. Offerings for {catalogue.years.slice(1).join(" and ")} are what P&amp;C lists now,
     which it calls indicative.
   </p>
-  <ul class="catalogue">
+  <div class="level-cols" style="margin-top: 24px">
     {
-      courses.map((course) => (
-        <li>
-          <a href={`/courses/${course.code}`}>{course.code}</a> {course.title}
-          {changing.includes(course) && <strong> · changes between years</strong>}
-          <span class="runs">
-            {catalogue.years.map((year) => `${year}: ${sessionsText(course.offerings[year])}`).join(" · ")}
-          </span>
-        </li>
+      levels.map(({ level, courses: list }) => (
+        <section aria-labelledby={`lv-${level}`}>
+          <h2 id={`lv-${level}`}>{level}-level</h2>
+          <ul>
+            {list.map((c) => (
+              <li>
+                <a class="node" href={`/courses/${c.code}`}>
+                  <span class="code">{c.code}</span>
+                  <span>{c.title}</span>
+                  <span class="sub">
+                    {runsText(c)}
+                    {changing.has(c.code) && " · changes between years"}
+                  </span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </section>
       ))
     }
-  </ul>
+  </div>
 </Layout>
