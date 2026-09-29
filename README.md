@@ -38,8 +38,8 @@ would be judged on whether you can **trust a warning**:
 - **Every warning shows its evidence**: the reason, the P&C sentence, the page,
   and the date it was read. Each [course page](https://comp4020-crit7-1181278174.fly.dev/courses/COMP2100) sets the P&C
   text beside the rule read from it.
-- **The rules are held to P&C's words.** I read each requisite sentence into a
-  rule by hand. Tests fail if a rule names a course the sentence doesn't, if
+- **The rules are held to P&C's words.** Each requisite sentence was read into
+  a rule by hand, one course at a time, not parsed by a program. Tests fail if a rule names a course the sentence doesn't, if
   the sentence names a course the rule ignores, or if a condition left to the
   student is not quoted word for word. Where a sentence is ambiguous, the
   course page says how it was read (15 courses).
