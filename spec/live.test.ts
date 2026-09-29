@@ -34,6 +34,7 @@ it("sends a change to a plan on /api/events", async () => {
     received += decoder.decode(value, { stream: true });
   }
   await reader.cancel();
-  expect(received).toContain("event: plan");
-  expect(received).toContain(JSON.stringify({ id, by: "spec-tab" }));
+  // the whole line: the page listens for events named exactly "plan"
+  expect(received).toMatch(/^event: plan$/m);
+  expect(received).toContain(`data: ${JSON.stringify({ id, by: "spec-tab" })}`);
 }, 10_000);
