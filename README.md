@@ -3,11 +3,15 @@
 Put ANU computing courses into semesters and see, for each one, whether it can
 go there and why not: prerequisites, the semesters it runs in each year,
 courses it can't be combined with, and your load. Every warning quotes ANU
-Programs and Courses (P&C) and links to the page it came from. It is an
-unofficial student prototype, not an ANU system.
+Programs and Courses (P&C) and links to the page it came from. Two views sit
+beside the plan: the computing majors' requirements, marked with what your plan
+already has, and a course map that shows what each course needs first and what
+it opens. It is an unofficial student prototype, not an ANU system.
 
 **Try it:** open the [example plan](https://comp4020-crit7-1181278174.fly.dev/plans/example). It has two problems in
-it. Copy it, move a course, and watch what the page says changes.
+it. Copy it, move a course, and watch what the page says changes. Then see
+[Software Development against that plan](https://comp4020-crit7-1181278174.fly.dev/majors/SOFT-MAJ?plan=example),
+or [COMP2100 on the course map](https://comp4020-crit7-1181278174.fly.dev/map/COMP2100).
 
 ## Why this
 
@@ -52,20 +56,36 @@ would be judged on whether you can **trust a warning**:
   on any device, and every open copy updates when it changes. The database
   itself refuses a course twice, a malformed code, a semester outside the
   plan, and any change to the example.
+- **Majors are shown, not judged.** The seven computing majors' lists are read
+  from their P&C pages, and tests check every block and course line against
+  that text. Compared with a plan, a major shows which listed courses the plan
+  has; the whole-major rules, such as how many units may be 1000-level, stay in
+  P&C's words.
+- **The course map says only what the rules say.** Each course shows what it
+  needs first, one level further back, and the courses that name it; for each
+  of those, only what it still needs once this course is done.
 - **It works on a phone and without JavaScript**: plain forms, one column at
   390 px.
 
-The tests in `spec/` enforce the data rules, the checks (a missing
-prerequisite, a semester a course doesn't run, incompatible courses, more
-than 24 units), persistence, the refusals and the live updates. The readings of
-ambiguous sentences, the wording of each warning and the layout are
-judgement calls.
+The tests in `spec/` enforce the data rules for courses and majors, the checks
+(a missing prerequisite, a semester a course doesn't run, incompatible courses,
+more than 24 units), persistence, the refusals, the live updates, the course
+map and the major comparison. The readings of ambiguous sentences, the wording
+of each warning and the layout are judgement calls; the layout was drawn on a
+design canvas before it was built.
 
 ## What I chose not to build
 
-Degree and major requirements (they change with the year you started, and a
-night is not enough to model them honestly); summer and winter sessions;
-grades and WAM; timetables; logins; drag and drop; importing from ANUHub.
+Deciding whether a degree or major is complete (the rules change with the year
+you started, and a night is not enough to model them honestly); majors outside
+computing; summer and winter sessions; grades and WAM; timetables; logins; drag
+and drop; importing from ANUHub.
+
+What I missed rather than chose: a plan does not record the student's degree.
+Each degree requires different courses, and some prerequisites change with the
+degree (COMP2100 asks more of Bachelor of Science students), so those
+conditions stay as "check yourself". Postgraduate courses and degrees, such as
+the Master of Computing, are not covered.
 
 ## Limits
 
