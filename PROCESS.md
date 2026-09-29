@@ -1,54 +1,43 @@
 # Process overview
 
-<!-- TEMPLATE: this file is a shape to fill in, not a form. Replace everything
-     in it with your own overview, and delete this comment — `pnpm
-     check:evidence` will remind you if it's still here. -->
-
-Written by you, for a reader: how you got from the brief to the harness and
-agentic workflow behind this submission. Markers read this file and follow its
-citations; they don't trawl the repo for evidence you didn't point at.
-
-This file is the shape; the course site's
-[assessment page](https://comp.anu.edu.au/courses/comp4020-agentic-coding-studio/topics/assessment/#what-you-submit)
-is the requirement, and its
-[word counts](https://comp.anu.edu.au/courses/comp4020-agentic-coding-studio/topics/assessment/#word-counts)
-cover every deliverable.
-
 ## What I built
 
-A sentence or two. `README.md` is where the account of what the app is and what
-good means here lives; this file is how you got there.
+A semester planner for ANU computing courses: courses go into semesters, and
+each one is checked against its prerequisites, the semesters it runs in each
+year, incompatible courses and the 24-unit load, with the Programs and Courses
+(P&C) text behind every warning. `README.md` says what good means here.
 
-## How I got here
+## The moments that mattered
 
-The account of the process: how the work actually went, and how you knew the
-result was right. Tell it in whatever order makes it clear. A weekly prototype
-needs a paragraph or two; an assignment needs more.
+### Research before design
 
-Cite the record as you go, as links whose text is the commit hash or range and
-whose target is this repo's commit or compare URL, so a reader clicks straight
-to the evidence:
+I chose course planning over tutorial allocation because its data is public:
+the agent could read it from P&C instead of my typing it in. Before accepting
+a design I asked for evidence:
 
-- one commit: [`a1b2c3d`](https://github.com/YOUR-ORG/YOUR-REPO/commit/a1b2c3d)
-- a range:
-  [`a1b2c3d...e4f5a6b`](https://github.com/YOUR-ORG/YOUR-REPO/compare/a1b2c3d...e4f5a6b)
+> 你先调研一下，现在的学生都有什么痛点，然后给我一个详细的设计方案
+> (First research what students struggle with now, then give me a detailed design.)
 
-To pair a prompt with the commit it produced, quote the prompt (curated, not a
-full transcript) next to the citation:
+The research found student-made planners that already do more than one night
+allows. I therefore set the aim as trust rather than features: every warning
+cites its source, offerings are read per year, and whatever cannot be checked
+is stated ([`d7b317f`](https://github.com/comp4020-agentic-coding-studio/comp4020-crit7-1181278174/commit/d7b317f)).
 
-> the prompt, verbatim
+### Holding the rules to P&C's words
 
-Screenshots are welcome where one carries the point better than a sentence does.
-Commit the file to this repo and link it with a **relative** path, which is what
-makes it render on GitHub: `![alt text](docs/before.png)`. Images don't count
-towards the word count and don't replace the citation.
+My harness forbids any rule the P&C sentence does not state
+([`ecb4dfb`](https://github.com/comp4020-agentic-coding-studio/comp4020-crit7-1181278174/commit/ecb4dfb)).
+The rules were read one course at a time, and a test compares each rule with
+its sentence in both directions; it failed when a prerequisite absent from the
+text was added on purpose
+([`f2691a8`](https://github.com/comp4020-agentic-coding-studio/comp4020-crit7-1181278174/commit/f2691a8)).
+The database refuses what a plan must never contain, through constraints and
+triggers rather than application code alone
+([`a9f8870`](https://github.com/comp4020-agentic-coding-studio/comp4020-crit7-1181278174/commit/a9f8870)).
 
-## Before you ship
+### Checking what shipped
 
-`pnpm check:evidence` verifies that this comment is gone, that your citations
-resolve to real commits, that a crit week's reflection entry is in
-`reflections/`, and that your `CLAUDE.md` is there. It checks that your account
-is traceable, not that it is good: that is the marker's call.
-
-Images aren't checked: unlike a citation whose SHA doesn't resolve, a broken
-image is visible the moment this file is rendered on GitHub.
+Each new test was shown failing before it was trusted. The deployed site
+passed the checks CI runs after a deploy, and screenshots at 390 px exposed a
+style conflict the tests could not see
+([`9f06677`](https://github.com/comp4020-agentic-coding-studio/comp4020-crit7-1181278174/commit/9f06677)).
