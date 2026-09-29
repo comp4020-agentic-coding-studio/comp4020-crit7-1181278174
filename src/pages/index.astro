@@ -1,53 +1,78 @@
 ---
-import { listMessages } from "../lib/db";
-import "../styles.css";
+import Layout from "../layouts/Layout.astro";
+import { currentTerm, termLabel } from "../lib/check";
 
-const messages = listMessages();
+const now = currentTerm(new Date());
+const starts = [];
+for (let year = now.year - 4; year <= now.year + 1; year++) {
+  starts.push({ year, session: "S1" as const }, { year, session: "S2" as const });
+}
+const defaultStart = `${now.year}-S1`;
+const failed = Astro.url.searchParams.get("error") === "invalid";
 ---
 
-<!doctype html>
-<html lang="en-AU">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>COMP4020 prototype</title>
-  </head>
-  <body>
-    <nav aria-label="site">
-      <a href="/">Guestbook</a>
-      <a href="/readme/">About</a>
-    </nav>
-    <main>
-      <h1>Guestbook</h1>
-      <p>
-        A minimal full-stack starter: messages live in SQLite on the machine's
-        volume (state survives a reload and a redeploy), and new messages
-        appear in every open tab over a server-sent-events stream — open this
-        page twice and sign it in one. Replace all of this with your own
-        prototype.
+<Layout
+  title="Semester planner for ANU computing courses"
+  description="Put ANU computing courses into semesters and see whether each one can go there, with the Programs and Courses text behind every warning."
+>
+  <h1>Plan your computing courses, semester by semester</h1>
+  <p class="lede">
+    Put courses into semesters and see straight away whether each one can go there: its
+    prerequisites, the semesters it runs in each year, courses it can't be combined with, and
+    how many units you'd be taking. Every warning quotes ANU Programs and Courses (P&amp;C) and
+    links to the page it came from.
+  </p>
+
+  <section aria-labelledby="start">
+    <h2 id="start">Start a plan</h2>
+    {failed && <p class="message error" role="alert">Check the plan's name and semesters, then try again.</p>}
+    <form method="post" action="/api/plans" class="stack">
+      <label for="name">Plan name</label>
+      <input id="name" name="name" required maxlength="80" value="My plan" />
+      <label for="start">First semester</label>
+      <select id="start" name="start">
+        {
+          starts.map((term) => (
+            <option value={`${term.year}-${term.session}`} selected={`${term.year}-${term.session}` === defaultStart}>
+              {termLabel(term)}
+            </option>
+          ))
+        }
+      </select>
+      <p class="help">
+        Start from the semester you began, and add the courses you've done: they count towards
+        prerequisites. Semesters up to now are not checked.
       </p>
-      <form method="post" action="/api/messages">
-        <label for="body">Leave a message</label>
-        <input id="body" name="body" required maxlength="500" />
-        <button>Sign</button>
-      </form>
-      <ul id="messages">
-        {messages.map((message) => <li>{message.body}</li>)}
-      </ul>
-    </main>
-    <script>
-      // The live half of the demo: subscribe to the SSE stream and prepend
-      // messages as they arrive. The form itself needs none of this — its
-      // POST + redirect re-renders the submitting tab from SQLite; this
-      // stream is how every other tab finds out.
-      const list = document.querySelector("#messages");
-      const source = new EventSource("/api/events");
-      source.addEventListener("message", (event) => {
-        const message = JSON.parse(event.data);
-        const item = document.createElement("li");
-        item.textContent = message.body;
-        list?.prepend(item);
-      });
-    </script>
-  </body>
-</html>
+      <label for="terms">Number of semesters</label>
+      <select id="terms" name="terms">
+        {[2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((n) => <option value={n} selected={n === 6}>{n}</option>)}
+      </select>
+      <button>Start planning</button>
+    </form>
+    <p>
+      Or open the <a href="/plans/example">example plan</a> first. It has two problems in it; see
+      if you can find them.
+    </p>
+  </section>
+
+  <section aria-labelledby="checks">
+    <h2 id="checks">What it checks</h2>
+    <ul>
+      <li>
+        <strong>Prerequisites</strong>, including rules like "12 units of 2000-level COMP", which
+        it adds up for you.
+      </li>
+      <li>
+        <strong>When a course runs</strong>, year by year for 2026 to 2028, as P&amp;C lists it.
+        Later years are marked "not published" rather than guessed.
+      </li>
+      <li><strong>Incompatible courses</strong> in the same plan.</li>
+      <li><strong>More than 24 units</strong> in a semester, which needs an approved overload.</li>
+    </ul>
+    <p>
+      What it can't check (permission codes, which degree you're in, marks) it quotes word for word
+      and leaves to you. It covers the undergraduate COMP courses and the MATH, ENGN and INFS
+      courses their prerequisites name; see the <a href="/courses/">course list</a>.
+    </p>
+  </section>
+</Layout>

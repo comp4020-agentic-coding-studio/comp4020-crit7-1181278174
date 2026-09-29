@@ -1,0 +1,258 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { catalogue } from "../../lib/catalogue";
+import { type CourseCheck, type Term, LOAD_LIMIT, shortLabel, termLabel } from "../../lib/check";
+import { REFUSALS, type Refusal, check, getPlan } from "../../lib/plans";
+
+const plan = getPlan(Astro.params.id ?? "");
+if (!plan) Astro.response.status = 404;
+const result = plan ? check(plan) : undefined;
+
+const refusal = Astro.url.searchParams.get("error") as Refusal | null;
+const refusedCode = Astro.url.searchParams.get("code") ?? "";
+const refusalText =
+  refusal && refusal in REFUSALS
+    ? ["duplicate", "absent"].includes(refusal)
+      ? `${refusedCode} ${REFUSALS[refusal]}`
+      : REFUSALS[refusal]
+    : undefined;
+
+const key = (t: Term) => `${t.year}-${t.session}`;
+const address = plan ? new URL(`/plans/${plan.id}`, Astro.url).href : "";
+const courseCount = plan?.courses.length ?? 0;
+
+function status(c: CourseCheck, past: boolean): { text: string; tone: string } {
+  if (!catalogue.courses.has(c.code)) return { text: "Not checked", tone: "plain" };
+  if (past) return { text: "Done", tone: "plain" };
+  if (c.problems.length) return { text: `✗ ${c.problems.length} problem${c.problems.length > 1 ? "s" : ""}`, tone: "bad" };
+  if (c.notes.some((n) => n.kind === "manual")) return { text: "! Check the note", tone: "check" };
+  if (c.notes.some((n) => n.kind === "unpublished")) return { text: "? Not published", tone: "check" };
+  return { text: "✓ Can go here", tone: "ok" };
+}
+---
+
+<Layout title={plan ? `${plan.name} · Semester planner` : "No plan here · Semester planner"} wide>
+  {
+    !plan || !result ? (
+      <>
+        <h1>No plan at this address</h1>
+        <p>
+          The link may be mistyped. <a href="/">Start a new plan</a> or open the{" "}
+          <a href="/plans/example">example plan</a>.
+        </p>
+      </>
+    ) : (
+      <>
+        <h1>{plan.name}</h1>
+        <p class="summary">
+          <span>{courseCount} course{courseCount === 1 ? "" : "s"}</span>
+          <span>{result.totalUnits} units</span>
+          <span>
+            {result.problemCount === 0
+              ? "No problems found"
+              : `${result.problemCount} problem${result.problemCount === 1 ? "" : "s"} to fix`}
+          </span>
+        </p>
+        {plan.readOnly ? (
+          <div class="message status">
+            <p>This example can't be changed. Copy it to make a plan of your own.</p>
+            <form method="post" action="/api/plans">
+              <input type="hidden" name="copy" value={plan.id} />
+              <button>Copy this plan</button>
+            </form>
+          </div>
+        ) : (
+          <p class="help">
+            This plan has no login: its address is the only way back to it. Bookmark{" "}
+            <a href={address}>{address}</a> or send it to yourself. Anyone with it can change the
+            plan, and every open copy updates when it changes.
+          </p>
+        )}
+        {refusalText && (
+          <p class="message error" role="alert">
+            {refusalText}
+          </p>
+        )}
+        {plan.lastChange && !refusalText && (
+          <p class="message status" role="status">
+            {plan.lastChange}
+          </p>
+        )}
+
+        <div class="terms">
+          {result.terms.map((t) => (
+            <section
+              class:list={["term", t.term.session === "S1" ? "s1" : "s2", { past: t.past }]}
+              id={`t-${key(t.term)}`}
+              aria-labelledby={`h-${key(t.term)}`}
+            >
+              <h2 id={`h-${key(t.term)}`}>{termLabel(t.term)}</h2>
+              <p class="meta">
+                {t.units}/{LOAD_LIMIT} units ·{" "}
+                {t.past
+                  ? "done or under way, not checked"
+                  : !t.published
+                    ? "offerings not published yet"
+                    : t.indicative
+                      ? "offerings indicative (P&C)"
+                      : "offerings as published"}
+              </p>
+              {t.overload && (
+                <p class="message error">
+                  {t.overload.message} <a href={t.overload.source}>ANU overload rules</a>
+                </p>
+              )}
+
+              {t.courses.length > 0 && (
+                <ul class="courses">
+                  {t.courses.map((c) => {
+                    const s = status(c, t.past);
+                    return (
+                      <li class="course">
+                        <div class="course-head">
+                          {catalogue.courses.has(c.code) ? (
+                            <a class="code" href={`/courses/${c.code}`}>
+                              {c.code}
+                            </a>
+                          ) : (
+                            <span class="code">{c.code}</span>
+                          )}
+                          {c.title && <span>{c.title}</span>}
+                          <span class="units">{c.units} units</span>
+                          <span class:list={["status", s.tone]}>{s.text}</span>
+                        </div>
+                        {(c.problems.length > 0 || c.notes.length > 0) && (
+                          <ul class="reasons">
+                            {c.problems.map((p) => (
+                              <li class="problem">
+                                <span class="tag">Problem:</span> {p.message}{" "}
+                                <a href={p.source}>
+                                  P&amp;C<span class="vh"> page for {c.code}</span>
+                                </a>
+                                {p.hint && <span class="hint">Fix: {p.hint}</span>}
+                              </li>
+                            ))}
+                            {c.notes.map((n) =>
+                              n.kind === "manual" ? (
+                                <li class="note">
+                                  <span class="tag">Check yourself:</span> “{n.message}”
+                                </li>
+                              ) : (
+                                <li class="note">{n.message}</li>
+                              ),
+                            )}
+                          </ul>
+                        )}
+                        {!plan.readOnly && (
+                          <div class="actions">
+                            <form method="post" action={`/api/plans/${plan.id}`}>
+                              <input type="hidden" name="intent" value="move" />
+                              <input type="hidden" name="code" value={c.code} />
+                              <input type="hidden" name="tab" value="" />
+                              <label>
+                                <span class="vh">Move {c.code} to</span>
+                                <select name="term">
+                                  {result.terms.map((other) => (
+                                    <option value={key(other.term)} selected={key(other.term) === key(t.term)}>
+                                      {shortLabel(other.term)}
+                                    </option>
+                                  ))}
+                                </select>
+                              </label>
+                              <button class="quiet">
+                                Move<span class="vh"> {c.code}</span>
+                              </button>
+                            </form>
+                            <form method="post" action={`/api/plans/${plan.id}`}>
+                              <input type="hidden" name="intent" value="remove" />
+                              <input type="hidden" name="code" value={c.code} />
+                              <input type="hidden" name="term" value={key(t.term)} />
+                              <input type="hidden" name="tab" value="" />
+                              <button class="quiet">
+                                Remove<span class="vh"> {c.code}</span>
+                              </button>
+                            </form>
+                          </div>
+                        )}
+                      </li>
+                    );
+                  })}
+                </ul>
+              )}
+
+              {!plan.readOnly && (
+                <form class="add" method="post" action={`/api/plans/${plan.id}`}>
+                  <input type="hidden" name="intent" value="add" />
+                  <input type="hidden" name="term" value={key(t.term)} />
+                  <input type="hidden" name="tab" value="" />
+                  <label for={`add-${key(t.term)}`}>Add a course to {shortLabel(t.term)}</label>
+                  <input
+                    id={`add-${key(t.term)}`}
+                    name="code"
+                    list="course-codes"
+                    required
+                    maxlength="9"
+                    autocomplete="off"
+                    placeholder="e.g. COMP2100"
+                  />
+                  <button>Add</button>
+                </form>
+              )}
+
+              {!plan.readOnly && t.eligible.length > 0 && (
+                <details>
+                  <summary>
+                    {t.eligible.length} more course{t.eligible.length === 1 ? "" : "s"} you could take in {shortLabel(t.term)}
+                  </summary>
+                  <form method="post" action={`/api/plans/${plan.id}`}>
+                    <input type="hidden" name="intent" value="add" />
+                    <input type="hidden" name="term" value={key(t.term)} />
+                    <input type="hidden" name="tab" value="" />
+                    <ul class="eligible">
+                      {t.eligible.map((code) => (
+                        <li>
+                          <button class="quiet" name="code" value={code}>
+                            Add<span class="vh"> {code}</span>
+                          </button>
+                          <a href={`/courses/${code}`}>{code}</a>
+                          <span>{catalogue.courses.get(code)?.title}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </form>
+                </details>
+              )}
+            </section>
+          ))}
+        </div>
+
+        <datalist id="course-codes">
+          {[...catalogue.courses.values()].map((course) => (
+            <option value={course.code}>{course.title}</option>
+          ))}
+        </datalist>
+        <script is:inline define:vars={{ planId: plan.id }}>
+          // Live updates: when this plan changes in another tab or on another
+          // device, reload. Each tab names itself in the forms it sends, so it
+          // can ignore the event its own change causes.
+          let tab = "";
+          try {
+            tab = sessionStorage.getItem("planner-tab") || "";
+            if (!tab) {
+              tab = Math.random().toString(36).slice(2);
+              sessionStorage.setItem("planner-tab", tab);
+            }
+          } catch {
+            tab = Math.random().toString(36).slice(2);
+          }
+          for (const input of document.querySelectorAll('input[name="tab"]')) input.value = tab;
+          const source = new EventSource("/api/events");
+          source.addEventListener("plan", (event) => {
+            const change = JSON.parse(event.data);
+            if (change.id === planId && change.by !== tab) location.reload();
+          });
+        </script>
+      </>
+    )
+  }
+</Layout>

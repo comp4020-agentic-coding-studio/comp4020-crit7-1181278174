@@ -92,6 +92,10 @@ phone, with a keyboard and without JavaScript); importing from ANUHub.
 | `plans` | `id` (random, 12 characters), `name`, `start_year`, `start_session`, `term_count`, `last_change`, `created_at`, `updated_at` |
 | `plan_courses` | (`plan_id`, `course_code`) PK, `year`, `session`, `units`; a CHECK keeps codes to four capitals and four digits |
 
+Triggers in `drizzle/0003_plan_guards.sql` refuse a course in a semester
+outside its plan and any change to a read-only plan, so no code path can skip
+those rules (decided 30 September).
+
 The first four tables are the catalogue, loaded from `data/` at startup in one
 transaction that never touches plans. The last two hold what people make. A
 course outside the catalogue can go in a plan: its units count, and it is

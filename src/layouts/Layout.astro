@@ -1,0 +1,55 @@
+---
+import { catalogueFetchedAt } from "../lib/catalogue";
+import "../styles.css";
+
+type Props = { title: string; description?: string; wide?: boolean };
+const { title, description, wide = false } = Astro.props;
+
+const links = [
+  { href: "/", label: "Start a plan" },
+  { href: "/plans/example", label: "Example plan" },
+  { href: "/courses/", label: "Courses" },
+  { href: "/readme/", label: "About" },
+];
+const read = new Date(catalogueFetchedAt).toLocaleDateString("en-AU", {
+  day: "numeric",
+  month: "long",
+  year: "numeric",
+  timeZone: "Australia/Sydney",
+});
+---
+
+<!doctype html>
+<html lang="en-AU">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    {description && <meta name="description" content={description} />}
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+    <header class="site">
+      <a class="brand" href="/">Semester planner <span>for ANU computing courses</span></a>
+      <nav aria-label="Site">
+        {
+          links.map((link) => (
+            <a href={link.href} aria-current={Astro.url.pathname === link.href ? "page" : undefined}>
+              {link.label}
+            </a>
+          ))
+        }
+      </nav>
+    </header>
+    <main id="main" class={wide ? "wide" : undefined}>
+      <slot />
+    </main>
+    <footer class="site">
+      <p>
+        An unofficial student prototype, not an ANU system. Course data from
+        <a href="https://programsandcourses.anu.edu.au/">ANU Programs and Courses</a>, read on {read}.
+        Check anything that matters with P&amp;C or ANU Student Hubs.
+      </p>
+    </footer>
+  </body>
+</html>

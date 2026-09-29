@@ -1,0 +1,137 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { catalogue, leadsTo } from "../../lib/catalogue";
+import { type Option, describeUnits } from "../../lib/check";
+
+const code = (Astro.params.code ?? "").toUpperCase();
+const course = catalogue.courses.get(code);
+if (!course) Astro.response.status = 404;
+
+const read = course
+  ? new Date(course.fetchedAt).toLocaleDateString("en-AU", {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+      timeZone: "Australia/Sydney",
+    })
+  : "";
+const describe = (option: Option) =>
+  option.kind === "units"
+    ? describeUnits(option)
+    : `${option.code}${option.concurrent ? " (may be taken in the same semester)" : ""}`;
+const inCatalogue = (c: string) => catalogue.courses.has(c);
+const next = course ? leadsTo(course.code) : [];
+const patterns = course ? new Set(catalogue.years.map((y) => (course.offerings[y] ?? []).join())) : new Set();
+---
+
+<Layout title={course ? `${course.code} ${course.title} · Semester planner` : "Course not found · Semester planner"}>
+  {
+    !course ? (
+      <>
+        <h1>{code || "That course"} isn't in this planner</h1>
+        <p>
+          The planner knows the undergraduate COMP courses and the courses their prerequisites name.
+          See <a href="/courses/">the course list</a>.
+        </p>
+      </>
+    ) : (
+      <>
+        <h1>
+          {course.code} {course.title}
+        </h1>
+        <p>
+          {course.units} units · <a href={course.sourceUrl}>{course.code} on P&amp;C ({course.rulesYear})</a> · read
+          on {read}
+        </p>
+
+        <h2>When it runs</h2>
+        <table>
+          <caption class="vh">Semesters {course.code} is offered in, by year</caption>
+          <thead>
+            <tr>
+              <th scope="col">Year</th>
+              <th scope="col">Offered</th>
+            </tr>
+          </thead>
+          <tbody>
+            {catalogue.years.map((year) => (
+              <tr>
+                <th scope="row">{year}</th>
+                <td>
+                  {(course.offerings[year] ?? []).map((s) => (s === "S1" ? "Semester 1" : "Semester 2")).join(" and ") ||
+                    "Not offered"}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        <p class="help">
+          From the class tab of the P&amp;C page. {patterns.size > 1 && "The semesters change between years. "}P&amp;C calls
+          offerings for future years indicative only.
+        </p>
+
+        <h2>What P&amp;C says</h2>
+        {course.requisiteText ? (
+          <blockquote>{course.requisiteText}</blockquote>
+        ) : (
+          <p>P&amp;C lists no requisites for this course.</p>
+        )}
+
+        <h2>How this planner reads it</h2>
+        {course.groups.length === 0 ? (
+          <p>No prerequisites to check.</p>
+        ) : (
+          <>
+            <p>Every one of these, before the semester you take it:</p>
+            <ul>
+              {course.groups.map((group) => (
+                <li>{group.length === 1 ? describe(group[0]!) : `one of: ${group.map(describe).join("; ")}`}</li>
+              ))}
+            </ul>
+          </>
+        )}
+        {course.incompatible.length > 0 && (
+          <p>
+            Can't be combined with:{" "}
+            {course.incompatible.map((c, i) => (
+              <>
+                {i > 0 && ", "}
+                {inCatalogue(c) ? <a href={`/courses/${c}`}>{c}</a> : c}
+              </>
+            ))}
+            .
+          </p>
+        )}
+        {course.reading && <p class="help">How the sentence was read: {course.reading}</p>}
+
+        {course.manual.length > 0 && (
+          <>
+            <h2>Left for you to check</h2>
+            <p>The planner can't check these, so a plan never passes or fails on them:</p>
+            <ul>
+              {course.manual.map((excerpt) => (
+                <li>“{excerpt}”</li>
+              ))}
+            </ul>
+          </>
+        )}
+
+        <h2>What it leads to</h2>
+        {next.length === 0 ? (
+          <p>No course in this planner names {course.code} as a prerequisite.</p>
+        ) : (
+          <p>
+            Named as a prerequisite by{" "}
+            {next.map((c, i) => (
+              <>
+                {i > 0 && ", "}
+                <a href={`/courses/${c}`}>{c}</a>
+              </>
+            ))}
+            .
+          </p>
+        )}
+      </>
+    )
+  }
+</Layout>

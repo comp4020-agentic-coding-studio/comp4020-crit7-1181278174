@@ -1,31 +1,26 @@
 import type { APIRoute } from "astro";
-import type { Message } from "../../lib/db";
-import { bus } from "../../lib/events";
+import { bus, type PlanEvent } from "../../lib/events";
 
-// The minimal server-sent-events (SSE) pattern: a long-lived streaming
-// response the browser consumes with `new EventSource("/api/events")`.
-// SSE is one-directional (server → browser) and plain HTTP, which makes it
-// the simplest live channel that works everywhere — reach for WebSockets
-// only when the client needs to push over the same connection.
+// Server-sent events: every change to any plan goes out as `event: plan`,
+// and a plan page reloads when the change is to its plan and came from
+// another tab or device. CI reads the opening comment after every deploy,
+// so the stream must answer immediately.
 export const GET: APIRoute = () => {
-  let onMessage: (message: Message) => void;
+  let onPlan: (event: PlanEvent) => void;
   let heartbeat: ReturnType<typeof setInterval>;
 
   const stream = new ReadableStream<string>({
     start(controller) {
-      // an opening comment so the client (and the post-deploy CI probe) sees
-      // bytes immediately, and a periodic one so proxies don't drop the
-      // connection as idle
       controller.enqueue(": connected\n\n");
       heartbeat = setInterval(() => controller.enqueue(": ping\n\n"), 30_000);
-      onMessage = (message) => {
-        controller.enqueue(`data: ${JSON.stringify(message)}\n\n`);
+      onPlan = (event) => {
+        controller.enqueue(`event: plan\ndata: ${JSON.stringify(event)}\n\n`);
       };
-      bus.on("message", onMessage);
+      bus.on("plan", onPlan);
     },
     cancel() {
       clearInterval(heartbeat);
-      bus.off("message", onMessage);
+      bus.off("plan", onPlan);
     },
   });
 
